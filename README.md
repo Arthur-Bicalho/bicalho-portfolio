@@ -1,10 +1,10 @@
 # Portfólio Terminal · Arthur Bicalho Angelo
 
-Meu portfólio pessoal: um site em React + Vite que imita um terminal Linux.
+Meu portfólio pessoal: um site em React + Vite que imita um terminal Linux. 
 O visitante navega digitando comandos (`ajuda` lista todos).
 
 Estudante de Ciência da Computação na PUC Minas e membro da
-[WebTech](https://webtech.network/), empresa júnior de tecnologia da PUC Minas.
+[WebTech](https://webtech.network/), empresa júnior de tecnologia da PUC.
 
 - GitHub: [github.com/Arthur-Bicalho](https://github.com/Arthur-Bicalho)
 - E-mail: arthurbangelo@gmail.com
