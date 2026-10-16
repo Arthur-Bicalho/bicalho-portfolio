@@ -36,7 +36,7 @@
 
 .brand-ascii {
   font-family: "FiraCode", "JetBrainsMono", monospace; /* mesmo nome do @font-face */
-  color: var(--text-muted);
+  color: var(--accent);
   font-size: inherit;
   line-height: 1.15;
   letter-spacing: 0;
@@ -302,5 +302,57 @@
   .info-list .icon {
     font-size: 1rem;
     margin-top: 0.05rem; /* alinha o ícone com a primeira linha do texto */
+  }
+}
+/* ---------- Glitch do banner ---------- */
+.brand-glitch {
+  position: relative;
+  min-width: 0;
+}
+
+.brand-glitch-r,
+.brand-glitch-c {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.brand-glitch-r {
+  color: var(--hud-red);
+  animation: brand-glitch-r 6s steps(1) infinite;
+}
+
+.brand-glitch-c {
+  color: var(--hud-cyan);
+  animation: brand-glitch-c 6s steps(1) infinite;
+}
+
+@keyframes brand-glitch-r {
+  0%, 88%, 100% { opacity: 0; transform: none; clip-path: inset(0); }
+  89% { opacity: 1; transform: translate(-0.5em, 0.15em); clip-path: inset(10% 0 55% 0); }
+  91% { opacity: 1; transform: translate(0.4em, -0.15em); clip-path: inset(60% 0 8% 0); }
+  93% { opacity: 1; transform: translate(-0.25em, 0); clip-path: inset(30% 0 40% 0); }
+  94% { opacity: 0; }
+}
+
+@keyframes brand-glitch-c {
+  0%, 88%, 100% { opacity: 0; transform: none; clip-path: inset(0); }
+  89% { opacity: 1; transform: translate(0.5em, -0.1em); clip-path: inset(50% 0 20% 0); }
+  91% { opacity: 1; transform: translate(-0.4em, 0.15em); clip-path: inset(5% 0 70% 0); }
+  93% { opacity: 1; transform: translate(0.25em, 0); clip-path: inset(70% 0 5% 0); }
+  94% { opacity: 0; }
+}
+
+/* No tema claro o "screen" some no fundo claro: o glitch fica de fora */
+[data-theme="light"] .brand-glitch-r,
+[data-theme="light"] .brand-glitch-c {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-glitch-r,
+  .brand-glitch-c {
+    display: none;
   }
 }

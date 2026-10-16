@@ -118,7 +118,17 @@ const BoasVindas = () => {
         ) : (
           <BrandLogo className="welcome-logo" />
         )}
-        <pre className="brand-ascii">{BICALHO_ASCII}</pre>
+        {/* Banner com glitch: duas cópias (vermelha e ciano) piscam deslocadas
+            de vez em quando, como no título do HUD (ver BoasVindas.css) */}
+        <div className="brand-glitch">
+          <pre className="brand-ascii">{BICALHO_ASCII}</pre>
+          <pre className="brand-ascii brand-glitch-r" aria-hidden="true">
+            {BICALHO_ASCII}
+          </pre>
+          <pre className="brand-ascii brand-glitch-c" aria-hidden="true">
+            {BICALHO_ASCII}
+          </pre>
+        </div>
       </div>
       {/* key muda quando o idioma muda, forçando recriação */}
       <TypeAnimation

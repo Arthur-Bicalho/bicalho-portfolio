@@ -1,7 +1,8 @@
 /* =====================================================================
    TEMAS — tokens de cor do portfólio
    ---------------------------------------------------------------------
-   • Dark é o padrão (:root) e mantém as cores originais do site.
+   • Dark é o padrão (:root): o visual netrunner (amarelo, vermelho e
+     ciano sobre quase preto) do HUD em volta do terminal (src/hud).
    • Light só sobrescreve os valores, ativado por <html data-theme="light">.
    • Galo (preto, branco e amarelo do Atlético) parte do dark e sobrescreve
      só as cores da marca, ativado por <html data-theme="galo">. As paletas
@@ -23,61 +24,81 @@
   color-scheme: dark;
 
   /* Fundos e superfícies */
-  --bg-page: #1a202c;         /* fundo da página / trilho da scrollbar */
-  --bg-terminal: #252a33;     /* mesmo fundo do react-terminal-ui (dark) */
-  --surface: #2d3748;         /* cards (experiências, projetos) */
-  --surface-input: #0f172a;   /* inputs e textarea */
-  --track: #1e293b;           /* fundo das barras de habilidade */
+  --bg-page: #0b0b0e;         /* fundo da página / trilho da scrollbar */
+  --bg-terminal: #0f0f13;     /* fundo do terminal */
+  --surface: #18181e;         /* cards (projetos, painéis) */
+  --surface-input: #0b0b0e;   /* inputs e textarea */
+  --track: #1f1f25;           /* trilhos de barras */
 
   /* Bordas */
-  --border: #4a5568;
-  --border-input: #334155;
+  --border: #3a3a42;
+  --border-input: #4a4a55;
 
-  /* Texto */
-  --text: #e2e8f0;
-  --text-soft: #cbd5e0;
-  --text-muted: #a0aec0;
-  --text-dim: #64748b;
-  --terminal-chrome: #a2a2a2; /* título "Portfolio terminal" e prompt */
-  --cursor: #ffffff;
+  /* Texto (contraste sobre #0f0f13: text 15:1, muted 8:1, dim 5:1) */
+  --text: #e8e6d9;
+  --text-soft: #d6d3c4;
+  --text-muted: #a8a597;
+  --text-dim: #8a8676;
+  --terminal-chrome: #fcee0a; /* faixa de título do terminal e prompt */
+  --cursor: #fcee0a;
 
-  /* Cor de destaque (verde neon) */
-  --accent: #00ff9d;
-  --accent-hover: #00cc7a;
-  --accent-focus: #00ffaa;
-  --link-hover: #66ffc9;
-  --on-accent: #0f172a;       /* texto em cima de botões verdes */
+  /* Cor de destaque (amarelo netrunner) */
+  --accent: #fcee0a;
+  --accent-hover: #d9cc00;
+  --accent-focus: #fff35c;
+  --link-hover: #fff35c;
+  --on-accent: #0b0b0e;       /* texto em cima do amarelo */
 
   /* Tags */
-  --tag-bg: #4a5568;
-  --tag-text: #cbd5e0;
+  --tag-bg: #26262d;
+  --tag-text: #d6d3c4;
 
   /* Cores semânticas */
-  --highlight: #ffbd2e;       /* "$ Boas-vindas ao meu Portfólio" */
-  --warn: #f3d956;
-  --info: #60a5fa;
-  --cmd-hint: #e2e8f0;        /* comandos `ajuda`/`pergunta` na boas-vindas */
-  --success: #22c55e;
+  --highlight: #fcee0a;       /* "$ Boas-vindas ao meu Portfólio" */
+  --warn: #fcee0a;
+  --info: #00f0ff;
+  --cmd-hint: #ffffff;        /* comandos `ajuda`/`pergunta` na boas-vindas */
+  --success: #39ff9c;
 
   /* Scrollbar */
-  --scrollbar-thumb: #4a5568;
-  --scrollbar-thumb-hover: gray;
+  --scrollbar-thumb: #3a3a42;
+  --scrollbar-thumb-hover: #fcee0a;
 
   /* Efeitos */
   --scanline: rgba(255, 255, 255, 0.025);
-  --shadow-xp-hover: 0 10px 25px -5px rgba(255, 133, 27, 0.15);
-  --shadow-project-hover: 0 20px 25px -5px rgba(0, 255, 157, 0.1),
-    0 10px 10px -5px rgba(0, 255, 157, 0.08);
+  --shadow-xp-hover: 0 10px 25px -5px rgba(252, 238, 10, 0.12);
+  --shadow-project-hover: 0 20px 25px -5px rgba(252, 238, 10, 0.1),
+    0 10px 10px -5px rgba(252, 238, 10, 0.06);
   --game-sky: #111;
 
   /* Ícones da tela de boas-vindas */
-  --icon-school: #f3d956;
-  --icon-work: #f57c00;
-  --icon-book: #b03060;
-  --icon-location: #ff6b6b;
-  --icon-mail-gmail: #e53935;
-  --icon-mail-puc: #519bd8;
-  --icon-github: #d1d5db;
+  --icon-school: #fcee0a;
+  --icon-work: #ff003c;
+  --icon-book: #ff4fd8;
+  --icon-location: #ff003c;
+  --icon-mail-gmail: #ff003c;
+  --icon-mail-puc: #00f0ff;
+  --icon-github: #e8e6d9;
+
+  /* HUD netrunner (src/hud): faixas, painéis, taskbar e loader retrô.
+     --hud-fill pinta fundos (faixas, botão iniciar, blocos da barra) e
+     --hud-line, textos e bordas; no escuro os dois são o amarelo. */
+  --hud-fill: #fcee0a;
+  --hud-on-fill: #0b0b0e;
+  --hud-line: #fcee0a;
+  --hud-red: #ff003c;
+  --hud-cyan: #00f0ff;
+  --hud-dim: #8a8676;
+  --hud-panel: rgba(252, 238, 10, 0.035);
+  --hud-grid: rgba(252, 238, 10, 0.05);
+  --hud-outline: rgba(255, 0, 60, 0.16);
+  --hud-taskbar: #141418;
+  --hud-inset: #000000;
+  --hud-button: #1f1f25;
+  --hud-bevel-hi: #fff7a0;    /* borda clara do relevo retrô */
+  --hud-bevel-lo: #6b6400;    /* borda escura do relevo retrô */
+  --hud-bevel-hi-2: #4a4a55;  /* relevo dos botões neutros */
+  --hud-bevel-lo-2: #000000;
 }
 
 /* Tema GALO: cores oficiais do Atlético Mineiro.
@@ -132,6 +153,23 @@
   --icon-mail-gmail: #ffd503;
   --icon-mail-puc: #ffd503;
   --icon-github: #ffffff;
+
+  --hud-fill: #ffd503;
+  --hud-on-fill: #000000;
+  --hud-line: #ffd503;
+  --hud-red: #ffffff;
+  --hud-cyan: #ffd503;
+  --hud-dim: #8c8c8c;
+  --hud-panel: rgba(0, 0, 0, 0.55);
+  --hud-grid: rgba(255, 213, 3, 0.04);
+  --hud-outline: rgba(255, 255, 255, 0.08);
+  --hud-taskbar: #000000;
+  --hud-inset: #000000;
+  --hud-button: #161616;
+  --hud-bevel-hi: #fff2a6;
+  --hud-bevel-lo: #6b5900;
+  --hud-bevel-hi-2: #3a3a3a;
+  --hud-bevel-lo-2: #000000;
 }
 
 [data-theme="light"] {
@@ -184,4 +222,23 @@
   --icon-mail-gmail: #c62828;
   --icon-mail-puc: #2563eb;
   --icon-github: #1a1e24;
+
+  /* HUD no claro: o amarelo continua nos fundos (faixas, botões), com texto
+     escuro em cima; textos e bordas usam um oliva escuro (6:1 no #f2f2f2) */
+  --hud-fill: #fcee0a;
+  --hud-on-fill: #1a1e24;
+  --hud-line: #6b6200;
+  --hud-red: #b4002a;
+  --hud-cyan: #006d77;
+  --hud-dim: #525c6b;
+  --hud-panel: rgba(255, 255, 255, 0.55);
+  --hud-grid: rgba(0, 0, 0, 0.05);
+  --hud-outline: rgba(180, 0, 42, 0.1);
+  --hud-taskbar: #c3c3c3;
+  --hud-inset: #e8e8e8;
+  --hud-button: #d4d4d4;
+  --hud-bevel-hi: #ffffff;
+  --hud-bevel-lo: #6b6b6b;
+  --hud-bevel-hi-2: #ffffff;
+  --hud-bevel-lo-2: #6b6b6b;
 }

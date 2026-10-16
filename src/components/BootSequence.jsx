@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { RetroBar } from "../hud/RetroLoader";
 import "./BootSequence.css";
 
 // [status, texto]  — status: "ok" | "warn" | "info" | null (linha crua do kernel)
@@ -92,17 +93,12 @@ export default function BootSequence({ onFinish }) {
     };
   }, [finish]);
 
-  const bar = Math.round(progress / 5);
-
   return (
     <div className={`boot-screen ${leaving ? "boot-leaving" : ""}`}>
-      {/* Cabeçalho igual ao do terminal: botões da janela, título e seletor PT | EN */}
-      <div className="react-terminal-window-buttons" aria-hidden="true">
-        <button className="red-btn" disabled tabIndex={-1} />
-        <button className="yellow-btn" disabled tabIndex={-1} />
-        <button className="green-btn" disabled tabIndex={-1} />
+      {/* Faixa amarela igual à do HUD (hud/Hud.css) e seletor PT | EN */}
+      <div className="boot-title" aria-hidden="true">
+        NET//RUNNER <span className="boot-title-sub">// BicalhoOS boot</span>
       </div>
-      <div className="boot-title" aria-hidden="true">Portfolio terminal</div>
       <LanguageSwitcher />
 
       <div className="boot-lines" aria-hidden="true">
@@ -120,8 +116,9 @@ export default function BootSequence({ onFinish }) {
 
         {visible >= BOOT_LINES.length && (
           <div className="boot-line boot-progress">
-            {t("boot.carregando")} [{"#".repeat(bar)}
-            {".".repeat(20 - bar)}] {progress}%
+            <span>{t("boot.carregando")}</span>
+            <RetroBar value={progress} segments={20} label={t("boot.carregando")} />
+            <span>{progress}%</span>
           </div>
         )}
         <span className="boot-cursor">▋</span>

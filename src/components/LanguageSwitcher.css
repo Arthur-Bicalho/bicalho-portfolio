@@ -79,3 +79,21 @@
     font-size: 19px;
   }
 }
+
+/* Na bandeja da taskbar do HUD: no fluxo, menor */
+.switcherInline {
+  position: static;
+  gap: 10px;
+}
+
+.switcherInline .icon {
+  font-size: 18px;
+}
+
+.switcherInline .themeToggle {
+  font-size: 18px;
+}
+
+.switcherInline .themeToggleGroup {
+  gap: 8px;
+}

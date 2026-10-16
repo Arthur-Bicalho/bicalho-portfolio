@@ -9,7 +9,7 @@ import lazyCommand from "./terminal/lazyCommand";
 import Ajuda from "./components/Ajuda";
 import BoasVindas from "./components/BoasVindas";
 import { marcarAtividade } from "./lib/visitas";
-import LanguageSwitcher from "./components/LanguageSwitcher";
+import Hud from "./hud/Hud";
 import BootSequence from "./components/BootSequence";
 import GaloFundo from "./components/GaloFundo";
 import { useTranslation } from "react-i18next";
@@ -86,7 +86,11 @@ const CommandLine = ({ text }) =>
       <span className="terminal-palavra">{word}</span>
     </React.Fragment>
   ));
-const terminalTitle = "Portfolio terminal";
+// Vira a faixa amarela de título do terminal (ver hud/Hud.css)
+const terminalTitle = "Terminal // visitante@portfolio";
+
+// Botões de comandos recentes na taskbar do HUD
+const MAX_RECENTES = 3;
 
 // Link direto: seu-site.vercel.app/?cmd=curriculo abre o portfólio já rodando o comando
 const DEEP_LINK_MAX_LENGTH = 60;
@@ -183,6 +187,27 @@ function App() {
   // Jogo, contato e guestbook (add) usam o teclado: o terminal fica em pausa
   const isTerminalPaused = isGameOpen || isContatoOpen || isGuestBookAddOpen;
 
+  // Últimos comandos, para os botões da taskbar (o mais recente primeiro)
+  const [recentes, setRecentes] = useState([]);
+  const lembrarComando = (command, input) => {
+    if (command.name === "limpar") return;
+    // "pergunta quem é você?" vira só "pergunta"; os outros guardam a opção
+    const palavras = input.trim().split(/\s+/);
+    const resumo = command.name === "pergunta" ? palavras[0] : palavras.slice(0, 2).join(" ");
+    setRecentes((atual) =>
+      [resumo, ...atual.filter((item) => item !== resumo)].slice(0, MAX_RECENTES),
+    );
+  };
+
+  // Atalhos do HUD (gigs, taskbar): rodam o comando no terminal, como se o
+  // visitante tivesse digitado. Com jogo/contato abertos, o terminal está em
+  // pausa e os atalhos também.
+  const runFromHud = (comando) => {
+    if (!booted || isTerminalPaused) return;
+    runCommandRef.current?.(comando);
+    focusTerminalInput();
+  };
+
   // Tab duplo sem completar: mostra as opções, como no bash
   const showCompletions = (typed, options) => {
     appendLines(
@@ -232,6 +257,7 @@ function App() {
     let response;
 
     if (command) {
+      lembrarComando(command, input);
       switch (command.name) {
         case "sobre":
           response = <SobreMim />;
@@ -408,19 +434,26 @@ function App() {
   return (
     <>
       {!booted && <BootSequence onFinish={handleBootFinish} />}
-      <div className="terminal-container">
-        <GaloFundo />
-        <LanguageSwitcher onLanguageChange={focusTerminalInput} />
-        <Terminal
-          name={terminalTitle}
-          colorMode={theme === "light" ? ColorMode.Light : ColorMode.Dark}
-          onInput={isTerminalPaused ? undefined : handleInput}
-          prompt={myPrompt}
-          height="calc(100dvh - 80px)" /* 60px + 20px de padding do .react-terminal-wrapper (App.css) */
-        >
-          {terminalLineData}
-        </Terminal>
-      </div>
+      <Hud
+        onCommand={runFromHud}
+        onFocusTerminal={focusTerminalInput}
+        recent={recentes}
+        paused={!booted || isTerminalPaused}
+        onLanguageChange={focusTerminalInput}
+      >
+        <div className="terminal-container">
+          <GaloFundo />
+          <Terminal
+            name={terminalTitle}
+            colorMode={theme === "light" ? ColorMode.Light : ColorMode.Dark}
+            onInput={isTerminalPaused ? undefined : handleInput}
+            prompt={myPrompt}
+            height="100%"
+          >
+            {terminalLineData}
+          </Terminal>
+        </div>
+      </Hud>
     </>
   );
 }

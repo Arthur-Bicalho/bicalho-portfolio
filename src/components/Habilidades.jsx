@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { FaGithub } from "react-icons/fa";
 import { FiArrowUpRight } from "react-icons/fi";
 import SkinsFooter from "./SkinsFooter";
+import RetroLoader from "../hud/RetroLoader";
 import "./Habilidades.css";
 
 // skills --globo traz o three.js: só é baixado quando o estilo é aberto
@@ -180,9 +181,7 @@ export default function Habilidades({ skin = DEFAULT_SKIN }) {
       {skillsData.length === 0 ? (
         <p className="habilidades-vazio">{t("habilidades.nenhuma")}</p>
       ) : skin === "globo" ? (
-        <Suspense
-          fallback={<p className="habilidades-vazio">{t("habilidades.carregandoGlobo")}</p>}
-        >
+        <Suspense fallback={<RetroLoader chave="habilidades.carregandoGlobo" />}>
           <SkillsGlobe skills={globeSkills} />
         </Suspense>
       ) : (

@@ -1,0 +1,676 @@
+/* =====================================================================
+   HUD NETRUNNER — moldura em volta do terminal (Hud.jsx)
+   Cabeçalho · painel esquerdo (perfil, cyberware) · terminal · painel
+   direito (breach protocol, gigs) · taskbar retrô. Cores só por token
+   (--hud-*, theme.css), então o HUD acompanha os temas escuro, claro e galo.
+   Uma tela só: o .hud tem a altura da janela e só o terminal rola.
+   ===================================================================== */
+
+.hud {
+  position: relative;
+  height: 100vh; /* fallback sem dvh */
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: 48px minmax(0, 1fr) 56px;
+  overflow: hidden;
+  background: var(--bg-page);
+  color: var(--text);
+  font-family: "FiraCode", "JetBrainsMono", monospace;
+}
+
+.hud > :not(.hud-fundo) {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Fundo: grade, nome vazado e a faixa de varredura ---------- */
+.hud-fundo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background-image: linear-gradient(var(--hud-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hud-grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.hud-fundo-nome {
+  position: absolute;
+  right: -40px;
+  top: 90px;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 300px;
+  line-height: 0.8;
+  writing-mode: vertical-rl;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--hud-outline);
+  user-select: none;
+}
+
+.hud-fundo-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 140px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--hud-cyan) 6%, transparent),
+    transparent
+  );
+  animation: hud-scan 7s linear infinite;
+}
+
+@keyframes hud-scan {
+  from { transform: translateY(-140px); }
+  to { transform: translateY(100vh); }
+}
+
+/* ---------- Cores utilitárias ---------- */
+.hud-amarelo { color: var(--hud-line); }
+.hud-vermelho { color: var(--hud-red); }
+.hud-ciano { color: var(--hud-cyan); }
+.hud-dim { color: var(--hud-dim); }
+
+/* ---------- Cabeçalho ---------- */
+.hud-cabecalho {
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hud-marca {
+  display: flex;
+  align-items: center;
+  padding: 0 32px 0 22px;
+  background: var(--hud-fill);
+  color: var(--hud-on-fill);
+  font-size: 20px;
+  white-space: nowrap;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%);
+}
+
+.hud-cabecalho-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 0 24px;
+  font-size: 14px;
+  color: var(--hud-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  border-bottom: 1px solid color-mix(in srgb, var(--hud-line) 30%, transparent);
+}
+
+.hud-cabecalho-info b {
+  color: var(--text);
+}
+
+.hud-sessao {
+  margin-left: auto;
+}
+
+/* ---------- Corpo: laterais + terminal ---------- */
+.hud-corpo {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr) 290px;
+  gap: 20px;
+  padding: 18px 20px;
+}
+
+.hud-lateral {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.hud-centro {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hud-centro .terminal-container {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+
+/* ---------- Painéis ---------- */
+.hud-painel {
+  padding: 16px;
+  border: 1px solid;
+  background: var(--hud-panel);
+  font-size: 13px;
+}
+
+.hud-painel-amarelo {
+  border-color: var(--hud-line);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+}
+
+.hud-painel-ciano {
+  border-color: color-mix(in srgb, var(--hud-cyan) 50%, transparent);
+}
+
+.hud-painel-vermelho {
+  border-color: color-mix(in srgb, var(--hud-red) 60%, transparent);
+}
+
+.hud-painel-titulo {
+  margin: 0 0 12px;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hud-line);
+}
+
+/* Perfil */
+.hud-perfil-foto {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--hud-line) 40%, transparent);
+}
+
+.hud-perfil-foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hud-perfil-foto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.22) 0px,
+      rgba(0, 0, 0, 0.22) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    linear-gradient(to top, rgba(11, 11, 14, 0.85), transparent 55%);
+}
+
+.hud-perfil-nome {
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  z-index: 1;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 21px;
+  color: #ffffff;
+}
+
+.hud-perfil-dados {
+  margin: 14px 0 0;
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 6px 10px;
+}
+
+.hud-perfil-dados dt {
+  color: var(--hud-dim);
+}
+
+.hud-perfil-dados dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Cyberware */
+.hud-cyberware {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.hud-cyberware-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 8px;
+}
+
+.hud-quadrado {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 8px;
+  background: var(--hud-line);
+}
+
+.hud-quadrado-vermelho {
+  background: var(--hud-red);
+}
+
+/* Breach protocol (decorativo) */
+.hud-breach-titulo {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hud-breach-grade {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.hud-breach-celula {
+  padding: 5px 0;
+}
+
+.hud-breach-ativa {
+  animation: hud-celula 3.2s ease-in-out infinite;
+}
+
+@keyframes hud-celula {
+  0%, 100% { background: transparent; color: var(--text); }
+  50% {
+    background: color-mix(in srgb, var(--hud-fill) 20%, transparent);
+    color: var(--hud-line);
+  }
+}
+
+/* Gigs: atalhos que rodam comandos no terminal */
+.hud-gigs {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.hud-gigs-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hud-gig {
+  width: 100%;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 4px;
+  border: none;
+  border-bottom: 1px dashed color-mix(in srgb, var(--hud-line) 25%, transparent);
+  background: none;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.hud-gig:hover:not(:disabled),
+.hud-gig:focus-visible {
+  background: color-mix(in srgb, var(--hud-fill) 12%, transparent);
+}
+
+.hud-gig:focus-visible {
+  outline: 2px solid var(--hud-line);
+  outline-offset: -2px;
+}
+
+.hud-gig:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.hud-gig-comando {
+  color: var(--hud-line);
+  white-space: nowrap;
+}
+
+.hud-gig-desc {
+  color: var(--hud-dim);
+  text-align: right;
+}
+
+/* ---------- Terminal dentro da moldura ---------- */
+.hud .react-terminal-window-buttons {
+  display: none;
+}
+
+.hud .react-terminal-wrapper {
+  height: 100%;
+  border: 1px solid var(--hud-line);
+  border-radius: 0;
+  padding-top: 50px !important;
+  clip-path: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
+}
+
+[data-theme="light"] .hud .react-terminal-wrapper,
+.hud .react-terminal-wrapper:not(.react-terminal-light) {
+  background: var(--bg-terminal);
+}
+
+[data-theme="galo"] .hud .react-terminal-wrapper {
+  background: transparent;
+}
+
+/* O nome da janela (data-terminal-name) vira a faixa amarela de título */
+.hud .terminal-container .react-terminal-wrapper::after {
+  top: 0;
+  left: 0;
+  right: 0;
+  width: auto;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 16px 0 30px;
+  box-sizing: border-box;
+  background: var(--hud-fill);
+  color: var(--hud-on-fill) !important;
+  text-align: left;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Com os painéis laterais na tela, os painéis dos comandos que usavam uma
+   porcentagem da janela (50%, 70%...) usam a largura do terminal */
+@media (min-width: 1181px) {
+  .hud-centro :is(.ghs-painel, .habilidades-container, .jogos, .lattes-painel, .sobre-painel, .curriculo-container) {
+    width: auto;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ---------- Taskbar retrô ---------- */
+.hud-taskbar {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  background: var(--hud-taskbar);
+  border-top: 2px solid var(--hud-line);
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hud-iniciar,
+.hud-aba {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  border: 2px solid;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.hud-iniciar {
+  flex-shrink: 0;
+  padding: 0 24px 0 14px;
+  background: var(--hud-fill);
+  color: var(--hud-on-fill);
+  font-size: 18px;
+  border-color: var(--hud-bevel-hi) var(--hud-bevel-lo) var(--hud-bevel-lo) var(--hud-bevel-hi);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+}
+
+.hud-iniciar:active:not(:disabled) {
+  border-color: var(--hud-bevel-lo) var(--hud-bevel-hi) var(--hud-bevel-hi) var(--hud-bevel-lo);
+}
+
+.hud-aba {
+  flex-shrink: 0;
+  width: 168px;
+  padding: 0 14px;
+  background: var(--hud-button);
+  color: var(--text);
+  font-size: 15px;
+  border-color: var(--hud-bevel-hi-2) var(--hud-bevel-lo-2) var(--hud-bevel-lo-2) var(--hud-bevel-hi-2);
+}
+
+.hud-aba-ativa {
+  background: var(--hud-inset);
+  color: var(--hud-line);
+  border-color: var(--hud-bevel-lo) var(--hud-bevel-hi) var(--hud-bevel-hi) var(--hud-bevel-lo);
+}
+
+.hud-aba:hover:not(:disabled):not(.hud-aba-ativa) {
+  color: var(--hud-line);
+}
+
+.hud-iniciar:focus-visible,
+.hud-aba:focus-visible {
+  outline: 2px solid var(--hud-cyan);
+  outline-offset: 2px;
+}
+
+.hud-iniciar:disabled,
+.hud-aba:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.hud-aba-ponto {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  background: currentColor;
+}
+
+.hud-aba-texto {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: none;
+  font-family: "FiraCode", monospace;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: 13px;
+}
+
+.hud-recentes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.hud-recentes .hud-aba {
+  width: 150px;
+}
+
+.hud-ticker {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: var(--hud-inset);
+  border: 2px solid;
+  border-color: var(--hud-bevel-lo-2) var(--hud-bevel-hi-2) var(--hud-bevel-hi-2) var(--hud-bevel-lo-2);
+}
+
+/* Duas cópias iguais: andar metade da largura recomeça sem pulo. A
+   distância fica no margin (e não no gap) para as metades serem idênticas. */
+.hud-ticker-faixa {
+  display: flex;
+  white-space: nowrap;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  color: var(--hud-line);
+  animation: hud-ticker 45s linear infinite;
+}
+
+.hud-ticker-faixa > * {
+  margin-left: 32px;
+}
+
+@keyframes hud-ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.hud-bandeja {
+  flex-shrink: 0;
+  height: 40px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 12px;
+  background: var(--hud-inset);
+  font-size: 15px;
+  border: 2px solid;
+  border-color: var(--hud-bevel-lo-2) var(--hud-bevel-hi-2) var(--hud-bevel-hi-2) var(--hud-bevel-lo-2);
+}
+
+.hud-relogio {
+  font-family: "FiraCode", monospace;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--hud-cyan);
+}
+
+/* ---------- Responsivo ---------- */
+/* Telas baixas: o breach protocol (só decoração) sai primeiro */
+@media (max-height: 800px) and (min-width: 1181px) {
+  .hud-breach {
+    display: none;
+  }
+
+  .hud-perfil-foto {
+    height: 110px;
+  }
+}
+
+@media (max-height: 640px) and (min-width: 1181px) {
+  .hud-perfil-foto {
+    display: none;
+  }
+}
+
+/* Sem espaço para as laterais: o terminal ocupa a largura toda */
+@media (max-width: 1180px) {
+  .hud-corpo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hud-lateral {
+    display: none;
+  }
+
+  .hud-recentes li:nth-child(n + 3) {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .hud-recentes {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .hud {
+    grid-template-rows: 40px minmax(0, 1fr) 50px;
+  }
+
+  .hud-marca {
+    font-size: 16px;
+    padding: 0 26px 0 14px;
+  }
+
+  .hud-cabecalho-info {
+    gap: 14px;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+
+  .hud-esconde-celular,
+  .hud-ticker,
+  .hud-aba-ativa {
+    display: none;
+  }
+
+  .hud-corpo {
+    padding: 8px;
+  }
+
+  .hud-bandeja {
+    margin-left: auto;
+    gap: 10px;
+    padding: 0 8px;
+  }
+
+  .hud-iniciar {
+    padding: 0 18px 0 12px;
+  }
+
+  .hud .react-terminal-wrapper {
+    padding-top: 44px !important;
+  }
+
+  .hud .terminal-container .react-terminal-wrapper::after {
+    height: 30px;
+    line-height: 30px;
+    font-size: 13px;
+    padding-left: 24px;
+  }
+}
+
+@media (max-width: 420px) {
+  .hud-relogio,
+  .hud-sessao {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hud-fundo-scan,
+  .hud-breach-ativa,
+  .hud-ticker-faixa {
+    animation: none;
+  }
+}
+
+/* Prompt no amarelo do HUD: o da linha ativa (pseudo-elemento da lib) e o
+   dos comandos já digitados (primeira palavra da linha, ver App.jsx) */
+.hud .react-terminal-wrapper .react-terminal-line::before,
+.hud .react-terminal-input .terminal-palavra:first-child {
+  color: var(--terminal-chrome);
+}

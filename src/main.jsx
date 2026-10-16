@@ -1,6 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+// Fonte dos títulos do HUD (só o peso 700, só o alfabeto latino: ~20 kB)
+import "@fontsource/rajdhani/latin-700.css";
 import "./theme/theme.css";
 import "./App.css";
 import App from "./App.jsx";

@@ -4,7 +4,8 @@ import { FaGlobeAmericas } from "react-icons/fa";
 import ThemeToggle from "./ThemeToggle";
 import "./LanguageSwitcher.css";
 
-const LanguageSwitcher = ({ onLanguageChange }) => {
+// inline: dentro da taskbar do HUD; sem ele, fica no canto (tela de boot)
+const LanguageSwitcher = ({ onLanguageChange, inline = false }) => {
   const { i18n } = useTranslation();
 
   const changeLanguage = (lng) => {
@@ -18,7 +19,7 @@ const LanguageSwitcher = ({ onLanguageChange }) => {
   const isEnActive = i18n.language.startsWith("en");
 
   return (
-    <div className="switcherContainer">
+    <div className={inline ? "switcherContainer switcherInline" : "switcherContainer"}>
       <ThemeToggle onToggle={onLanguageChange} />
       <span className="switcherDivider">|</span>
       <FaGlobeAmericas className={`icon ${isEnActive ? "active" : ""}`} />

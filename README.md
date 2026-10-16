@@ -1,10 +1,10 @@
 # Portfólio Terminal · Arthur Bicalho Angelo
 
-Meu portfólio pessoal: um site em React + Vite que imita um terminal Linux. 
+Meu portfólio pessoal: um site em React + Vite que imita um terminal Linux.
 O visitante navega digitando comandos (`ajuda` lista todos).
 
 Estudante de Ciência da Computação na PUC Minas e membro da
-[WebTech](https://webtech.network/), empresa júnior de tecnologia da PUC.
+[WebTech](https://webtech.network/), empresa júnior de tecnologia da PUC Minas.
 
 - GitHub: [github.com/Arthur-Bicalho](https://github.com/Arthur-Bicalho)
 - E-mail: arthurbangelo@gmail.com
@@ -33,6 +33,18 @@ Estudante de Ciência da Computação na PUC Minas e membro da
 | `limpar` / `clear` | Limpa o terminal |
 
 Links diretos: `?cmd=sobre` abre o site já rodando um comando e `?lang=en` abre em inglês.
+
+## Visual (HUD netrunner)
+
+O terminal fica no meio de um HUD inspirado em Cyberpunk e Neuromancer (`src/hud`):
+
+- **Cabeçalho** `NET//RUNNER` com distrito, nó e sessão.
+- **Painel esquerdo**: perfil (foto, handle, classe, facção) e "cyberware instalado" (as habilidades de `src/data/skillsMeta.js`).
+- **Painel direito**: breach protocol (decorativo) e "gigs", atalhos que rodam comandos no terminal.
+- **Taskbar retrô**: o botão `>_ BICALHO` roda `ajuda`, `terminal.exe` volta o foco para o terminal, os últimos 3 comandos viram botões, o ticker mostra curiosidades e a bandeja tem tema, idioma e relógio.
+- **Loader retrô**: a janela "System message" com barra em blocos aparece enquanto um comando carrega.
+
+Tudo cabe numa tela (só o terminal rola). Abaixo de 1180 px os painéis laterais somem; no celular a taskbar fica compacta. As cores vêm dos tokens `--hud-*` em `src/theme/theme.css`, nos temas escuro, claro e galo. O HUD soma ~3 kB (gzip) ao carregamento inicial, mais a fonte Rajdhani (16 kB).
 
 ## Rodando localmente
 
@@ -67,7 +79,7 @@ Conteúdo:
   [spotify-recently-played](https://spotify-recently-played.jeffreyca.workers.dev). Sem login, eles ficam escondidos e aparece só o link do seu perfil. Uma música para o player vai em `TRACK_ID` (`src/config/spotifyConfig.js`).
 - **Projetos**: `src/data/projectsData.js` + títulos e descrições em `projetos.*` no i18n.
 - **Currículo em inglês** (opcional): salve `public/cv-en.pdf` e marque `en: true` em `CURRICULOS` (`src/components/Curriculo.jsx`).
-- **Níveis das habilidades**: ocultos. Para mostrar, ajuste `level` e mude `MOSTRAR_NIVEL` para `true` em `src/data/skillsData.js`.
+- **Níveis das habilidades**: ocultos. Para mostrar, ajuste `level` e mude `MOSTRAR_NIVEL` para `true` em `src/data/skillsMeta.js`.
 - **PDF**: `public/cv-pt.pdf` é o PDF do seu Lattes sem endereço e telefone. Ao atualizar, nunca publique o PDF original do Lattes, que traz os dois.
 - **Endereço do site**: troque `arthur-bicalho.vercel.app` em `index.html` pelo endereço que a Vercel der ao projeto. `public/og.png` é a prévia do link.
 

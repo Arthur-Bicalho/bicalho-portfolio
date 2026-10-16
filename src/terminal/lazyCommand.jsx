@@ -1,11 +1,13 @@
 import React, { lazy, Suspense } from "react";
-import { Aviso, FalhaAoCarregar } from "./CommandFallback";
+import { FalhaAoCarregar } from "./CommandFallback";
+import RetroLoader from "../hud/RetroLoader";
 
 // Comando carregado sob demanda: o código (e o CSS) de cada comando só é
 // baixado na primeira vez que ele roda, em vez de vir todo no bundle inicial.
 //
 //   const SobreMim = lazyCommand(() => import("../components/SobreMim"));
-//   <SobreMim />              → igual a antes, com "Carregando..." no meio
+//   <SobreMim />              → igual a antes, com a janela "System message"
+//                               (hud/RetroLoader.jsx) enquanto o código desce
 //   SobreMim.preload()        → baixa o código antes (ver App.jsx)
 //
 // O componente devolvido é sempre o mesmo, então o App continua conseguindo
@@ -36,7 +38,7 @@ export default function lazyCommand(loader, { fallbackKey = "comando.carregando"
     const Loaded = LazyComponent;
     return (
       <FalhaAoCarregar onError={reset}>
-        <Suspense fallback={<Aviso chave={fallbackKey} />}>
+        <Suspense fallback={<RetroLoader chave={fallbackKey} />}>
           <Loaded {...props} />
         </Suspense>
       </FalhaAoCarregar>
