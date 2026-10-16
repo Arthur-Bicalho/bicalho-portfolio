@@ -1,0 +1,187 @@
+/* =====================================================================
+   TEMAS — tokens de cor do portfólio
+   ---------------------------------------------------------------------
+   • Dark é o padrão (:root) e mantém as cores originais do site.
+   • Light só sobrescreve os valores, ativado por <html data-theme="light">.
+   • Galo (preto, branco e amarelo do Atlético) parte do dark e sobrescreve
+     só as cores da marca, ativado por <html data-theme="galo">. As paletas
+     dos gráficos continuam as do dark.
+   • Os seletores também valem dentro da página: um elemento com
+     data-theme="dark", "light" ou "galo" usa as cores daquele tema (o
+     comando "design" usa isso para mostrar os três temas lado a lado).
+   • Os CSS dos componentes usam apenas var(--token); para ajustar uma cor,
+     mude aqui e ela muda no site inteiro.
+   • Importado em main.jsx antes de App.css.
+   • As cores do tema light foram escolhidas para ter contraste ≥ 4.5:1
+     (texto) ou ≥ 3:1 (ícones/bordas) sobre o fundo #ddd do
+     ColorMode.Light do react-terminal-ui.
+   ===================================================================== */
+
+:root,
+[data-theme="dark"],
+[data-theme="galo"] {
+  color-scheme: dark;
+
+  /* Fundos e superfícies */
+  --bg-page: #1a202c;         /* fundo da página / trilho da scrollbar */
+  --bg-terminal: #252a33;     /* mesmo fundo do react-terminal-ui (dark) */
+  --surface: #2d3748;         /* cards (experiências, projetos) */
+  --surface-input: #0f172a;   /* inputs e textarea */
+  --track: #1e293b;           /* fundo das barras de habilidade */
+
+  /* Bordas */
+  --border: #4a5568;
+  --border-input: #334155;
+
+  /* Texto */
+  --text: #e2e8f0;
+  --text-soft: #cbd5e0;
+  --text-muted: #a0aec0;
+  --text-dim: #64748b;
+  --terminal-chrome: #a2a2a2; /* título "Portfolio terminal" e prompt */
+  --cursor: #ffffff;
+
+  /* Cor de destaque (verde neon) */
+  --accent: #00ff9d;
+  --accent-hover: #00cc7a;
+  --accent-focus: #00ffaa;
+  --link-hover: #66ffc9;
+  --on-accent: #0f172a;       /* texto em cima de botões verdes */
+
+  /* Tags */
+  --tag-bg: #4a5568;
+  --tag-text: #cbd5e0;
+
+  /* Cores semânticas */
+  --highlight: #ffbd2e;       /* "$ Boas-vindas ao meu Portfólio" */
+  --warn: #f3d956;
+  --info: #60a5fa;
+  --cmd-hint: #e2e8f0;        /* comandos `ajuda`/`pergunta` na boas-vindas */
+  --success: #22c55e;
+
+  /* Scrollbar */
+  --scrollbar-thumb: #4a5568;
+  --scrollbar-thumb-hover: gray;
+
+  /* Efeitos */
+  --scanline: rgba(255, 255, 255, 0.025);
+  --shadow-xp-hover: 0 10px 25px -5px rgba(255, 133, 27, 0.15);
+  --shadow-project-hover: 0 20px 25px -5px rgba(0, 255, 157, 0.1),
+    0 10px 10px -5px rgba(0, 255, 157, 0.08);
+  --game-sky: #111;
+
+  /* Ícones da tela de boas-vindas */
+  --icon-school: #f3d956;
+  --icon-work: #f57c00;
+  --icon-book: #b03060;
+  --icon-location: #ff6b6b;
+  --icon-mail-gmail: #e53935;
+  --icon-mail-puc: #519bd8;
+  --icon-github: #d1d5db;
+}
+
+/* Tema GALO: cores oficiais do Atlético Mineiro.
+     Amarelo #FFD503 (estrela do escudo) · Preto #000000 · Branco #FFFFFF
+   Herda do dark tudo que não está aqui (paletas dos gráficos inclusive).
+   Contrastes sobre o fundo #000000: amarelo 15:1, texto 21:1, muted 10:1. */
+[data-theme="galo"] {
+  color-scheme: dark;
+
+  --bg-page: #000000;
+  --bg-terminal: #000000;
+  --surface: #161616;
+  --surface-input: #050505;
+  --track: #1f1f1f;
+
+  --border: #3a3a3a;
+  --border-input: #4d4d4d;
+
+  --text: #ffffff;
+  --text-soft: #dcdcdc;
+  --text-muted: #b5b5b5;
+  --text-dim: #8c8c8c;
+  --terminal-chrome: #ffd503;
+  --cursor: #ffffff;
+
+  --accent: #ffd503;          /* amarelo oficial (estrela do escudo) */
+  --accent-hover: #e6c000;
+  --accent-focus: #ffe04d;
+  --link-hover: #ffe04d;
+  --on-accent: #000000;
+
+  --tag-bg: #262626;
+  --tag-text: #e6e6e6;
+
+  --highlight: #ffd503;
+  --warn: #ffd503;
+  --info: #e6e6e6;
+  --cmd-hint: #ffffff;
+
+  --scrollbar-thumb: #3a3a3a;
+  --scrollbar-thumb-hover: #ffd503;
+
+  --shadow-xp-hover: 0 10px 25px -5px rgba(255, 213, 3, 0.15);
+  --shadow-project-hover: 0 20px 25px -5px rgba(255, 213, 3, 0.12),
+    0 10px 10px -5px rgba(255, 213, 3, 0.08);
+  --game-sky: #000;
+
+  --icon-school: #ffd503;
+  --icon-work: #ffd503;
+  --icon-book: #ffd503;
+  --icon-location: #ffd503;
+  --icon-mail-gmail: #ffd503;
+  --icon-mail-puc: #ffd503;
+  --icon-github: #ffffff;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-page: #cfcfcf;
+  --bg-terminal: #dddddd;     /* mesmo fundo do react-terminal-ui (light) */
+  --surface: #f2f2f2;
+  --surface-input: #f7f7f7;
+  --track: #c4c8cf;
+
+  --border: #a0a7b2;
+  --border-input: #6b7280;
+
+  --text: #1a1e24;            /* mesmo texto do react-terminal-ui (light) */
+  --text-soft: #2d3748;
+  --text-muted: #4a5568;
+  --text-dim: #525c6b;
+  --terminal-chrome: #a8323f; /* rosa da lib (#D76D77) escurecido: 2.4 → 4.8:1 */
+  --cursor: #1a1e24;
+
+  --accent: #00663f;          /* verde da marca escurecido: 5.2:1 no #ddd */
+  --accent-hover: #004d33;
+  --accent-focus: #004d33;
+  --link-hover: #004d33;
+  --on-accent: #ffffff;
+
+  --tag-bg: #c9ced6;
+  --tag-text: #1f2937;
+
+  --highlight: #9a3412;
+  --warn: #92400e;
+  --info: #1d4ed8;
+  --cmd-hint: #1a1e24;
+  --success: #166534;
+
+  --scrollbar-thumb: #9aa1ac;
+  --scrollbar-thumb-hover: #6b7280;
+
+  --scanline: rgba(0, 0, 0, 0.035);
+  --shadow-xp-hover: 0 10px 25px -5px rgba(0, 102, 63, 0.2);
+  --shadow-project-hover: 0 20px 25px -5px rgba(0, 102, 63, 0.15),
+    0 10px 10px -5px rgba(0, 102, 63, 0.1);
+  --game-sky: linear-gradient(to bottom, #8ecbff 0%, #dff0ff 100%);
+
+  --icon-school: #a16207;
+  --icon-work: #c2410c;
+  --icon-book: #b03060;
+  --icon-location: #dc2626;
+  --icon-mail-gmail: #c62828;
+  --icon-mail-puc: #2563eb;
+  --icon-github: #1a1e24;
+}

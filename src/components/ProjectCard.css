@@ -1,0 +1,179 @@
+.card-container {
+  max-height: 600px;
+  display: flex;
+  background-color: var(--surface);
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2),
+    0 4px 6px -2px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card-container:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-project-hover);
+}
+
+.gif-container {
+  flex: 0 0 40%;
+  overflow: hidden;
+}
+
+.project-gif {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Entre uma tentativa e outra, a imagem que falhou fica escondida (sem o
+   ícone de imagem quebrada e o texto alternativo) */
+.project-gif.esperando {
+  visibility: hidden;
+}
+
+/* Quando nenhuma imagem carrega: o nome do projeto num quadro, na mesma
+   proporção das imagens do GitHub (1200x600) */
+.project-gif-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 12rem;
+  padding: 1.5rem;
+  background:
+    radial-gradient(circle at 25% 20%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 60%),
+    var(--bg-terminal);
+  color: var(--text-soft);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.project-gif-placeholder svg {
+  font-size: 2.5rem;
+  color: var(--accent);
+}
+
+.content-container {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 90ch;
+  text-align: justify;
+}
+
+.card-title {
+  margin: 0 0 0.75rem 0;
+  color: var(--accent);
+  font-size: 1.5rem;
+}
+
+.card-description {
+  margin: 0 0 1rem 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.technologies-container {
+  margin-bottom: 1rem;
+}
+
+.tech-tag {
+  display: inline-block;
+  background-color: var(--tag-bg);
+  color: var(--tag-text);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.tech-tag:hover {
+  background-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.repo-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: bold;
+  align-self: flex-start;
+  transition: color 0.2s ease;
+}
+
+.repo-link:hover {
+  color: var(--link-hover);
+}
+
+/* Responsividade */
+
+@media (max-width: 900px) {
+  .project-gif-placeholder {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 2 / 1;
+  }
+
+  .card-container {
+    flex-direction: column;
+    align-items: stretch; /* faz o card ocupar toda largura */
+    gap: 0; /* sem gap extra entre imagem e texto */
+    text-align: center;
+    max-height: none; /* permite crescer conforme conteúdo */
+    padding: 0; /* sem padding no card */
+  }
+
+  .gif-container {
+    width: 100%;
+    display: block; /* mantém a imagem encostada nas bordas */
+    margin-bottom: 0; /* sem gap extra entre imagem e texto */
+  }
+
+  .project-gif {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* imagem ocupa largura inteira */
+  }
+
+  .content-container {
+    padding: 1.5rem; /* padding só no texto */
+    align-items: stretch; /* mantém largura do conteúdo igual ao card */
+  }
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    gap: 0;
+    max-height: none; /* permite crescer conforme conteúdo */
+    padding: 0;
+  }
+
+  .gif-container {
+    width: 100%;
+    display: block;
+    margin-bottom: 0;
+  }
+
+  .project-gif {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .content-container {
+    padding: 1.2rem; /* padding só no texto */
+    align-items: stretch;
+  }
+}

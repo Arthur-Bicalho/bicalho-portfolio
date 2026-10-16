@@ -1,0 +1,81 @@
+.switcherContainer {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  z-index: 10;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: var(--text-muted);
+}
+
+.icon {
+  cursor: pointer;
+  font-size: 24px;
+  transition: color 0.3s ease, transform 0.3s ease;
+  color: var(--text-muted);
+}
+
+.langText {
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.active {
+  color: var(--accent);
+  transform: scale(1.1);
+}
+
+/* Botões sol / lua / galo do tema */
+.themeToggleGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.themeToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-size: 22px;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.themeToggle:hover {
+  color: var(--accent);
+  transform: rotate(-15deg) scale(1.1);
+}
+
+.themeToggle-active {
+  color: var(--accent);
+}
+
+.themeToggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.switcherDivider {
+  opacity: 0.6;
+}
+
+@media (max-width: 480px) {
+  .switcherContainer {
+    gap: 8px;
+  }
+
+  .themeToggleGroup {
+    gap: 6px;
+  }
+
+  .themeToggle {
+    font-size: 19px;
+  }
+}

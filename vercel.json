@@ -1,0 +1,18 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/ask.js": {
+      "maxDuration": 60
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/github/profile-views",
+      "destination": "https://komarev.com/ghpvc/?username=Arthur-Bicalho"
+    },
+    {
+      "source": "/api/github/repo-views",
+      "destination": "https://views-counter.vercel.app/badge"
+    }
+  ]
+}

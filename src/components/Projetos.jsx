@@ -1,0 +1,39 @@
+import React, { useRef } from "react";
+import { useTranslation } from "react-i18next";
+import ProjectCard from "./ProjectCard";
+import { projectsData } from "../data/projectsData";
+import useCommandAtTop from "../terminal/useCommandAtTop";
+import "./Projetos.css";
+
+const Projetos = () => {
+  const { t } = useTranslation();
+  const ref = useRef(null);
+  useCommandAtTop(ref);
+
+  // Mapear dados com traduções
+  const translatedProjects = projectsData.map((project) => ({
+    ...project,
+    title: t(`projetos.${project.titleId}`),
+    description: t(`projetos.${project.descriptionId}`),
+  }));
+
+  return (
+    <div className="projeto-container" ref={ref}>
+      <h3 className="projeto-title">
+        {t("projetos.titulo")}
+      </h3>
+
+      {translatedProjects.length === 0 ? (
+        <p className="comando-em-breve">{t("projetos.nenhum")}</p>
+      ) : (
+        <div>
+          {translatedProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Projetos;

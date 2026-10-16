@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- Favicon: o prompt ">_" no verde da marca (accent) sobre o fundo do terminal (bg-terminal) -->
+  <rect width="256" height="256" rx="56" fill="#252a33"/>
+  <g fill="#00ff9d" transform="translate(40 40) scale(0.88)">
+    <path d="M28 46 L56 18 L130 92 L130 108 L56 182 L28 154 L84 100 Z"/>
+    <path d="M110 154 H178 V182 H110 Z"/>
+  </g>
+</svg>

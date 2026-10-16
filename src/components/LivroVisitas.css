@@ -1,0 +1,162 @@
+.guestbook-container {
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: var(--text);
+  min-width: 0;
+}
+
+.guestbook-header {
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+}
+
+.guestbook-title {
+  font-size: 1.8rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.guestbook-subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* herda a FiraCode do terminal em vez da monospace do sistema */
+.guestbook-commands,
+.guestbook-messages,
+.guestbook-cli-add {
+  font-family: inherit;
+}
+
+.command-line {
+  display: flex;
+  gap: 0.25rem 1rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.command {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.command-desc {
+  color: var(--text-muted);
+}
+
+.cli-hint {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.guestbook-entry {
+  border-left: 2px solid var(--accent);
+  padding-left: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.guestbook-name {
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  overflow-wrap: anywhere;
+}
+
+.guestbook-message {
+  color: var(--text-soft);
+  overflow-wrap: anywhere; /* mensagens sem espaço (links, "kkkkkk") não estouram */
+}
+
+/* CLI INPUT */
+
+.cli-input-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cli-prefix {
+  color: var(--accent);
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.cli-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-input);
+  border-radius: 0;
+  color: var(--text);
+  font-family: inherit; /* inputs não herdam fonte por padrão */
+  font-size: inherit;
+  width: 50%;
+  min-width: 0;
+  padding: 4px 0;
+  outline: none;
+}
+
+.cli-input:focus {
+  border-bottom: 1px solid var(--accent);
+}
+
+.cli-success {
+  color: var(--success);
+  margin-top: 1rem;
+  font-family: inherit;
+}
+
+/* .btn-voltar-terminal fica em BotaoVoltar.css (compartilhado com o jogo) */
+
+/* Responsividade */
+
+@media (max-width: 768px) {
+  .guestbook-container {
+    padding: 0 0.75rem;
+    gap: 1.25rem;
+  }
+
+  .guestbook-title {
+    font-size: 1.5rem;
+  }
+
+  /* no celular o campo ocupa toda a linha */
+  .cli-input {
+    flex: 1;
+    width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .guestbook-container {
+    padding: 0 0.25rem;
+    gap: 1rem;
+  }
+
+  .guestbook-header {
+    padding-left: 0.75rem;
+  }
+
+  .guestbook-title {
+    font-size: 1.25rem;
+  }
+
+  .guestbook-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .command-line {
+    margin-bottom: 0.6rem;
+  }
+
+  .guestbook-entry {
+    padding-left: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  /* iOS dá zoom automático em inputs com fonte menor que 16px */
+  .cli-input {
+    font-size: 16px;
+  }
+}
