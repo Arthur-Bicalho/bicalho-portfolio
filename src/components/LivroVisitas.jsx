@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useCommandAtTop from "../terminal/useCommandAtTop";
 import { useTranslation } from "react-i18next";
 import { supabase } from "../lib/supabase";
+import "./Cli.css";
 import "./LivroVisitas.css";
 import "./BotaoVoltar.css";
 import emailjs from "@emailjs/browser";

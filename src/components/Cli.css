@@ -1,0 +1,83 @@
+/* Vocabulário das saídas em estilo CLI (comandos, dicas e campos de linha),
+   usado pelo guestbook e pelos comandos novos (ctf, cifra...). Fica num
+   arquivo só, como o BotaoVoltar.css: com os comandos carregados sob demanda,
+   cada um importa este CSS em vez de depender de outro comando já aberto.
+   As regras são as que estavam em LivroVisitas.css. */
+
+.command-line {
+  display: flex;
+  gap: 0.25rem 1rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.command {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.command-desc {
+  color: var(--text-muted);
+}
+
+.cli-hint {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+/* CLI INPUT */
+
+.cli-input-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cli-prefix {
+  color: var(--accent);
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.cli-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-input);
+  border-radius: 0;
+  color: var(--text);
+  font-family: inherit; /* inputs não herdam fonte por padrão */
+  font-size: inherit;
+  width: 50%;
+  min-width: 0;
+  padding: 4px 0;
+  outline: none;
+}
+
+.cli-input:focus {
+  border-bottom: 1px solid var(--accent);
+}
+
+.cli-success {
+  color: var(--success);
+  margin-top: 1rem;
+  font-family: inherit;
+}
+
+@media (max-width: 768px) {
+  /* no celular o campo ocupa toda a linha */
+  .cli-input {
+    flex: 1;
+    width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .command-line {
+    margin-bottom: 0.6rem;
+  }
+
+  /* iOS dá zoom automático em inputs com fonte menor que 16px */
+  .cli-input {
+    font-size: 16px;
+  }
+}
