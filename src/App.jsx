@@ -9,6 +9,7 @@ import lazyCommand from "./terminal/lazyCommand";
 import Ajuda from "./components/Ajuda";
 import BoasVindas from "./components/BoasVindas";
 import { marcarAtividade } from "./lib/visitas";
+import { registrarComando } from "./lib/ranking";
 import Hud from "./hud/Hud";
 import BootSequence from "./components/BootSequence";
 import GaloFundo from "./components/GaloFundo";
@@ -51,6 +52,10 @@ const Hack = lazyCommand(() => import("./components/Hack"));
 const Ctf = lazyCommand(() => import("./components/Ctf"));
 const Cifra = lazyCommand(() => import("./components/Cifra"));
 const Whoami = lazyCommand(() => import("./components/Whoami"));
+// Dados: ranking de comandos, o que estou fazendo agora e o "galo --stats"
+const Ranking = lazyCommand(() => import("./components/Ranking"));
+const Agora = lazyCommand(() => import("./components/Agora"));
+const GaloStats = lazyCommand(() => import("./components/GaloStats"));
 
 // Depois do boot, com o navegador ocioso, já baixa os comandos leves: o
 // primeiro uso de cada um abre na hora, sem "Carregando...". Ficam de fora os
@@ -76,6 +81,9 @@ const PRELOAD = [
   Ctf,
   Cifra,
   Whoami,
+  Ranking,
+  Agora,
+  GaloStats,
 ];
 
 const whenIdle = (fn) =>
@@ -275,6 +283,8 @@ function App() {
 
     if (command) {
       lembrarComando(command, input);
+      // Ranking: só o nome do comando, uma vez por sessão (lib/ranking.js)
+      if (command.name !== "limpar") registrarComando(command.name);
       switch (command.name) {
         case "sobre":
           response = <SobreMim />;
@@ -382,6 +392,11 @@ function App() {
             response = <TerminalOutput>{t("jogos.uso")}</TerminalOutput>;
             break;
           }
+          if (subCommand === "--stats") {
+            // Aproveitamento da temporada (components/GaloStats.jsx)
+            response = <GaloStats />;
+            break;
+          }
           const tabela = subCommand === "--tabela" || subCommand === "--table";
           response = <Jogos todos={Boolean(subCommand) && !tabela} tabela={tabela} />;
           break;
@@ -479,6 +494,12 @@ function App() {
         }
         case "whoami":
           response = <Whoami />;
+          break;
+        case "ranking":
+          response = <Ranking />;
+          break;
+        case "agora":
+          response = <Agora />;
           break;
         default:
           break;

@@ -1,0 +1,128 @@
+/* Comando "ranking": barras de caracteres que crescem da esquerda, uma depois
+   da outra. Só tokens do theme.css. */
+.ranking {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 0 1.5rem 1rem;
+  min-width: 0;
+}
+
+.ranking p {
+  margin: 0;
+}
+
+.ranking-titulo {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 1.15em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hud-line);
+}
+
+.ranking-intro {
+  color: var(--text-muted);
+}
+
+.ranking-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.ranking-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 1.5ch;
+  min-width: 0;
+}
+
+.ranking-posicao {
+  color: var(--hud-red);
+  font-weight: 600;
+}
+
+.ranking-nome {
+  min-width: var(--largura-nome, 0);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Os blocos não podem ter espaço entre as letras nem quebrar */
+.ranking-barra {
+  display: inline-block;
+  min-width: 24ch;
+  white-space: pre;
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: var(--hud-line);
+  transform-origin: left center;
+  animation: ranking-cresce 600ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation-delay: calc(var(--i, 0) * 50ms);
+}
+
+.ranking-total {
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+@keyframes ranking-cresce {
+  from {
+    transform: scaleX(0.05);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes ranking-aparece {
+  from {
+    opacity: 0;
+  }
+}
+
+.ranking-nota {
+  color: var(--text-dim);
+  font-size: 0.85em;
+  max-width: 70ch;
+}
+
+@media (max-width: 768px) {
+  .ranking {
+    padding: 0 0.5rem 1rem;
+  }
+}
+
+/* Celular: posição e nome numa linha, a barra e o total na de baixo */
+@media (max-width: 480px) {
+  .ranking {
+    padding: 0 0 1rem;
+  }
+
+  .ranking-item {
+    margin-bottom: 0.35rem;
+  }
+
+  .ranking-nome {
+    min-width: 0;
+  }
+
+  .ranking-barra {
+    flex-basis: 100%;
+    min-width: 0;
+  }
+}
+
+/* Sem movimento: as barras só aparecem com um fade */
+@media (prefers-reduced-motion: reduce) {
+  .ranking-barra {
+    animation-name: ranking-aparece;
+  }
+}

@@ -92,8 +92,9 @@ export const commandList = {
     aliases: ['galo', 'atletico', 'championship'],
     // Próximos jogos do Atlético Mineiro (ver components/Jogos.jsx);
     // --todos | --all mostram todos os jogos já marcados;
-    // --tabela | --table mostram a classificação do Brasileirão
-    subcommands: ['--todos', '--all', '--tabela', '--table'],
+    // --tabela | --table mostram a classificação do Brasileirão;
+    // --stats mostra o aproveitamento da temporada (ver components/GaloStats.jsx)
+    subcommands: ['--todos', '--all', '--tabela', '--table', '--stats'],
   },
   basquete: {
     name: 'basquete',
@@ -149,7 +150,17 @@ export const commandList = {
     aliases: ['quemsou'],
     categoria: 'seguranca',
   },
+  ranking: {
+    name: 'ranking',
+    aliases: ['top'],
+    categoria: 'dados',
+  },
+  agora: {
+    name: 'agora',
+    aliases: ['now'],
+    categoria: 'dados',
+  },
 };
 
 // Ordem das categorias no "ajuda" (os nomes ficam em ajuda.categoria.* no i18n)
-export const categorias = ['seguranca'];
+export const categorias = ['seguranca', 'dados'];
