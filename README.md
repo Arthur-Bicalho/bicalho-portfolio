@@ -52,6 +52,13 @@ O `ajuda` mostra a tabela acima e, embaixo, uma linha por categoria com os coman
 | `agora` / `now` | O que estou estudando e construindo (`src/data/agoraData.js`) e o último push público |
 | `galo --stats` | Aproveitamento do Galo na temporada: gols, saldo, últimos 10 jogos e gols por jogo |
 
+**Comunidade**
+
+| Comando | O que faz |
+| --- | --- |
+| `recado` / `note` | Recado anônimo que só eu leio (`recado <texto>` já abre com o texto) |
+| `indicar` / `recommend` | Indicações de música aprovadas; `indicar --enviar` manda uma (fica pendente até eu aprovar) |
+
 O `ranking` conta cada comando no máximo uma vez por visita e envia só o nome dele, sem IP nem
 identificação. O banco aceita só os nomes da lista em `registrar_comando` e limita a frequência.
 
@@ -113,6 +120,19 @@ Contas e chaves (vão nas variáveis de ambiente da Vercel; veja o `.env.example
   4. `ctf.sql` (placar e conferência da flag do `ctf`, veja abaixo)
   5. `ranking_comandos.sql` (ranking de comandos). Ao criar um comando novo, acrescente o nome
      na lista `permitidos` de `registrar_comando` e rode o arquivo de novo.
+  6. `recados.sql` (recados anônimos: o visitante só insere; 1–280 caracteres, 5 por minuto e
+     100 por dia)
+  7. `indicacoes.sql` (indicações de música: pendentes até você aprovar; 5 por minuto e 100 por
+     dia)
+
+### Recados e indicações
+
+- **Ler os recados:** no Supabase, *Table Editor → recados*, ou no SQL Editor:
+  `select texto, created_at from public.recados order by created_at desc;`
+- **Aprovar indicações:** *Table Editor → indicacoes*, marque `aprovado` na linha; ou no SQL Editor:
+  `select id, artista, musica, nome from public.indicacoes where not aprovado order by created_at;`
+  e depois `update public.indicacoes set aprovado = true where id = '<id>';`.
+  Para recusar, apague a linha (`delete from public.indicacoes where id = '<id>';`).
 - **Gemini** (`GEMINI_API_KEY`) para o `pergunta`. Depois de qualquer mudança no conteúdo, rode `npm run ask` para atualizar `api/_askPerfil.js`.
 - Opcionais: `GITHUB_SITE_TOKEN` (stats mais completos) e reCAPTCHA no contato.
 
