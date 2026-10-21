@@ -140,7 +140,7 @@ const resources = {
         carregando: "Fetching Galo's fixtures...",
         erro: "Couldn't fetch the matches right now. Try again in a moment.",
         nenhum: "No matches scheduled yet.",
-        uso: "Usage: campeonato [--all | --table] (championship | galo | atletico also work)",
+        uso: "Usage: campeonato [--all | --table | --stats] (championship | galo | atletico also work)",
         proximo_em: "Next match {{tempo}}",
         relogio_alt: "Countdown to the next match",
         placar_alt: "Live score",
@@ -764,7 +764,7 @@ const resources = {
           desc: "Shows system info with the Galo crest, neofetch style.",
         },
         campeonato: {
-          desc: "Galo's upcoming matches: countdown and competition (campeonato --all | --table).",
+          desc: "Galo's upcoming matches: countdown and competition (galo --all | --table | --stats).",
         },
         basquete: {
           desc: "NBA upcoming games: countdown, team logos and TV (nba lal | nba --all).",
@@ -799,8 +799,15 @@ const resources = {
         whoami: {
           desc: "What any site knows about you without asking for permission, plus privacy tips.",
         },
+        ranking: {
+          desc: "The commands visitors use the most, as a bar chart (one count per command per visit).",
+        },
+        agora: {
+          desc: "What I'm studying and building right now, and my latest public push on GitHub.",
+        },
         categoria: {
           seguranca: "security",
+          dados: "data",
         },
         dicas: {
           titulo: "Tips:",
@@ -1082,7 +1089,7 @@ const resources = {
         carregando: "Buscando os jogos do Galo...",
         erro: "Não consegui buscar os jogos agora. Tente de novo daqui a pouco.",
         nenhum: "Nenhum jogo marcado por enquanto.",
-        uso: "Uso: campeonato [--todos | --tabela] (championship | galo | atletico também funcionam)",
+        uso: "Uso: campeonato [--todos | --tabela | --stats] (championship | galo | atletico também funcionam)",
         proximo_em: "Próximo jogo {{tempo}}",
         relogio_alt: "Contagem regressiva para o próximo jogo",
         placar_alt: "Placar ao vivo",
@@ -1708,7 +1715,7 @@ const resources = {
           desc: "Mostra as informações do sistema com o escudo do Galo, no estilo neofetch.",
         },
         campeonato: {
-          desc: "Próximos jogos do Galo: contagem regressiva e campeonato (campeonato --todos | --tabela).",
+          desc: "Próximos jogos do Galo: contagem regressiva e campeonato (galo --todos | --tabela | --stats).",
         },
         basquete: {
           desc: "Próximos jogos da NBA: contagem regressiva, logos dos times e TV (nba lal | nba --todos).",
@@ -1743,8 +1750,15 @@ const resources = {
         whoami: {
           desc: "O que qualquer site sabe sobre você sem pedir permissão, e dicas de privacidade.",
         },
+        ranking: {
+          desc: "Os comandos que os visitantes mais usam, num gráfico de barras (uma contagem por comando por visita).",
+        },
+        agora: {
+          desc: "O que estou estudando e construindo agora, e o meu último push público no GitHub.",
+        },
         categoria: {
           seguranca: "segurança",
+          dados: "dados",
         },
         dicas: {
           titulo: "Dicas:",

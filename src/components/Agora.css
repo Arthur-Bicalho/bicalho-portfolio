@@ -1,0 +1,123 @@
+/* Comando "agora": pares rótulo/valor e o último push numa entrada com a
+   borda amarela do guestbook. Só tokens do theme.css. */
+.agora {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 0 1.5rem 1rem;
+  min-width: 0;
+}
+
+.agora p {
+  margin: 0;
+}
+
+.agora-titulo {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 1.15em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hud-line);
+}
+
+.agora-intro {
+  color: var(--text-muted);
+}
+
+.agora-lista {
+  margin: 0;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.35rem 2ch;
+  max-width: 80ch;
+}
+
+/* A linha some do layout e os filhos viram células da grade */
+.agora-item {
+  display: contents;
+}
+
+.agora-lista dt {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.agora-lista dd {
+  margin: 0;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.agora-push {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--accent);
+  min-width: 0;
+}
+
+.agora-rotulo {
+  margin: 0;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hud-dim);
+}
+
+.agora-push-repo {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Texto vindo do GitHub: quebra em qualquer ponto, nunca estoura */
+.agora-push-linha,
+.agora-push-mensagem {
+  overflow-wrap: anywhere;
+}
+
+.agora-push-mensagem {
+  color: var(--text-soft);
+}
+
+.agora-dim {
+  color: var(--text-dim);
+}
+
+.agora-push a {
+  color: var(--accent);
+}
+
+.agora-push a:hover {
+  color: var(--link-hover);
+}
+
+.agora-rodape {
+  color: var(--text-dim);
+  font-size: 0.85em;
+}
+
+/* Telas estreitas: rótulo em cima do texto */
+@media (max-width: 768px) {
+  .agora {
+    padding: 0 0.5rem 1rem;
+  }
+
+  .agora-lista {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .agora-lista dd {
+    margin-bottom: 0.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .agora {
+    padding: 0 0 1rem;
+  }
+}

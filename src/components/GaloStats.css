@@ -1,0 +1,183 @@
+/* "galo --stats": aproveitamento na RetroBar, números em pares e os últimos
+   jogos em letras e barras de caracteres. Só tokens do theme.css. */
+.galostats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 0 1.5rem 1rem;
+  min-width: 0;
+}
+
+.galostats p {
+  margin: 0;
+}
+
+.galostats-titulo {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 1.15em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hud-line);
+}
+
+.galostats-intro {
+  color: var(--text-muted);
+}
+
+.galostats .galostats-rotulo {
+  margin: 0;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hud-dim);
+}
+
+.galostats-aproveitamento {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 22rem;
+}
+
+.galostats-numero {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.galostats-numeros {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2.5rem;
+}
+
+.galostats-numeros dt {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.galostats-numeros dd {
+  margin: 0;
+  color: var(--text);
+}
+
+.galostats-secao {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+/* V E D lado a lado, como uma sequência de forma */
+.galostats-forma {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.galostats-letra {
+  position: relative;
+  width: 2em;
+  height: 2em;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  border: 1px solid currentColor;
+}
+
+.galostats-v {
+  color: var(--success);
+}
+
+.galostats-e {
+  color: var(--text-muted);
+}
+
+.galostats-d {
+  color: var(--hud-red);
+}
+
+/* Texto só para leitores de tela */
+.galostats-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.galostats-gols {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.galostats-gols li {
+  display: grid;
+  grid-template-columns: 6ch 5ch 5ch minmax(0, 1fr);
+  gap: 1ch;
+  align-items: baseline;
+}
+
+.galostats-data {
+  color: var(--text-dim);
+}
+
+.galostats-adversario {
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.galostats-placar {
+  font-weight: 600;
+}
+
+.galostats-barras {
+  white-space: pre;
+  letter-spacing: 0;
+  overflow: hidden;
+}
+
+.galostats-pro {
+  color: var(--hud-line);
+}
+
+.galostats-contra {
+  color: var(--hud-red);
+}
+
+.galostats-dim {
+  color: var(--text-dim);
+}
+
+.galostats-legenda {
+  font-size: 0.85em;
+}
+
+@media (max-width: 768px) {
+  .galostats {
+    padding: 0 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .galostats {
+    padding: 0 0 1rem;
+  }
+
+  .galostats-numeros {
+    gap: 0.5rem 1.5rem;
+  }
+}

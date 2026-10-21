@@ -6,7 +6,7 @@
 // começasse do jeito certo (/users/<usuário>?x=1, ?x=2...): cada variação era
 // uma URL nova para a CDN, que não tinha nada em cache, e cada uma gastava
 // uma chamada do limite do token. Agora o conjunto é fechado: perfil,
-// repositórios (até MAX_REPO_PAGES páginas), as buscas de PRs, issues e
+// repositórios (até MAX_REPO_PAGES páginas), os eventos públicos, as buscas de PRs, issues e
 // commits (com as datas de hoje) e as linguagens de cada repositório.
 //
 // Este arquivo também roda no Node (Vercel Function e vite.config.js): não lê
@@ -79,6 +79,9 @@ export const githubPaths = {
   // Comando "github": os repositórios mais recentes
   recentRepos: () => `/users/${USERNAME}/repos?sort=updated&per_page=${PER_PAGE}`,
 
+  // Comando "agora": os eventos públicos recentes (o último push)
+  events: () => `/users/${USERNAME}/events/public?per_page=10`,
+
   // Comando "stats"
   user: () => `/users/${USERNAME}`,
   repos: (page) => `/users/${USERNAME}/repos?type=owner&sort=pushed&per_page=100&page=${page}`,
@@ -101,6 +104,7 @@ export function allowedPaths(now = new Date()) {
   const days = [addDays(today, -1), today, addDays(today, 1)];
   return new Set([
     githubPaths.recentRepos(),
+    githubPaths.events(),
     githubPaths.user(),
     ...Array.from({ length: MAX_REPO_PAGES }, (_, i) => githubPaths.repos(i + 1)),
     githubPaths.pullRequests(),
