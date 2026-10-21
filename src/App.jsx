@@ -56,6 +56,9 @@ const Whoami = lazyCommand(() => import("./components/Whoami"));
 const Ranking = lazyCommand(() => import("./components/Ranking"));
 const Agora = lazyCommand(() => import("./components/Agora"));
 const GaloStats = lazyCommand(() => import("./components/GaloStats"));
+// Comunidade: recado anônimo e indicações de música (com aprovação)
+const Recado = lazyCommand(() => import("./components/Recado"));
+const Indicar = lazyCommand(() => import("./components/Indicar"));
 
 // Depois do boot, com o navegador ocioso, já baixa os comandos leves: o
 // primeiro uso de cada um abre na hora, sem "Carregando...". Ficam de fora os
@@ -84,6 +87,8 @@ const PRELOAD = [
   Ranking,
   Agora,
   GaloStats,
+  Recado,
+  Indicar,
 ];
 
 const whenIdle = (fn) =>
@@ -201,23 +206,27 @@ function App() {
   const lastLine = terminalLineData[terminalLineData.length - 1];
   const isGuestBookAddOpen = lastLine?.type === LivroVisitas && lastLine?.props?.mode === "add";
 
-  // hack, cifra e o envio do ctf também têm campos ou teclas próprios
-  const isSegurancaOpen =
+  // hack, cifra, recado e os envios do ctf e do indicar também têm campos ou
+  // teclas próprios
+  const isInterativoOpen =
     lastLine?.type === Hack ||
     lastLine?.type === Cifra ||
-    (lastLine?.type === Ctf && lastLine?.props?.modo === "enviar");
+    lastLine?.type === Recado ||
+    (lastLine?.type === Ctf && lastLine?.props?.modo === "enviar") ||
+    (lastLine?.type === Indicar && lastLine?.props?.modo === "enviar");
 
   // Jogo, contato, guestbook (add) e os acima usam o teclado: o terminal fica em pausa
-  const isTerminalPaused = isGameOpen || isContatoOpen || isGuestBookAddOpen || isSegurancaOpen;
+  const isTerminalPaused = isGameOpen || isContatoOpen || isGuestBookAddOpen || isInterativoOpen;
 
   // Últimos comandos, para os botões da taskbar (o mais recente primeiro)
   const [recentes, setRecentes] = useState([]);
   const lembrarComando = (command, input) => {
     if (command.name === "limpar") return;
-    // "pergunta quem é você?" vira só "pergunta" (e "ctf <flag>", só "ctf",
-    // para a flag não ficar num botão); os outros guardam a opção
+    // "pergunta quem é você?" vira só "pergunta" (e "ctf <flag>" e
+    // "recado <texto>", só o nome, para a flag e o recado não ficarem num
+    // botão); os outros guardam a opção
     const palavras = input.trim().split(/\s+/);
-    const soONome = command.name === "pergunta" || command.name === "ctf";
+    const soONome = ["pergunta", "ctf", "recado"].includes(command.name);
     const resumo = soONome ? palavras[0] : palavras.slice(0, 2).join(" ");
     setRecentes((atual) =>
       [resumo, ...atual.filter((item) => item !== resumo)].slice(0, MAX_RECENTES),
@@ -501,6 +510,24 @@ function App() {
         case "agora":
           response = <Agora />;
           break;
+        case "recado": {
+          // "recado <texto>" abre o envio já com o texto, como foi digitado
+          const texto = input.trim().replace(/^\S+\s*/, "");
+          response = <Recado texto={texto} onExit={exitComponent} />;
+          break;
+        }
+        case "indicar": {
+          // "indicar" (ou --lista | --list) mostra as aprovadas;
+          // "--enviar" | "--add" abre o envio
+          const modos = { "--enviar": "enviar", "--add": "enviar", "--lista": "lista", "--list": "lista" };
+          if (subCommand && !modos[subCommand]) {
+            response = <TerminalOutput>{t("indicar.uso")}</TerminalOutput>;
+            break;
+          }
+          const modo = modos[subCommand] ?? "lista";
+          response = <Indicar modo={modo} onExit={modo === "enviar" ? exitComponent : undefined} />;
+          break;
+        }
         default:
           break;
       }
