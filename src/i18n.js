@@ -1,5 +1,10 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+
+// Este arquivo vai no bundle inicial. Os comandos novos (hack, ctf, cifra,
+// whoami...) guardam aqui só a descrição da ajuda e a mensagem de uso; o resto
+// dos textos fica em src/i18n/<comando>.js e desce junto com o comando
+// (ver src/i18n/registrar.js).
 const resources = {
   en: {
     translation: {
@@ -782,12 +787,33 @@ const resources = {
         pergunta: {
           desc: "An AI answers anything about me (e.g. ask who are you?).",
         },
+        hack: {
+          desc: "Breach protocol minigame: pick the codes and upload the sequences before time runs out (hack --easy | --hard).",
+        },
+        ctf: {
+          desc: "There's a flag hidden in the site. Find it and send it with ctf --submit (ctf --scoreboard shows who made it).",
+        },
+        cifra: {
+          desc: "Encodes your text live with Caesar, ROT13, Vigenère, Base64, hex and SHA-256 (cipher hello | cipher --decode).",
+        },
+        whoami: {
+          desc: "What any site knows about you without asking for permission, plus privacy tips.",
+        },
+        categoria: {
+          seguranca: "security",
+        },
         dicas: {
           titulo: "Tips:",
           historico: "↑ / ↓ browse the commands you already typed",
           autocomplete: "Tab completes commands; Tab twice lists the options.",
+          tudo: "help --all describes every command.",
         },
       },
+      // Mensagens de uso (o App mostra antes de baixar o comando); o resto dos
+      // textos de cada comando novo fica em src/i18n/<comando>.js
+      hack: { uso: "Usage: hack [--easy | --hard]" },
+      ctf: { uso: "Usage: ctf [--submit | --scoreboard] (or ctf <flag>)" },
+      cifra: { uso: "Usage: cipher <text> [--decode]" },
       lattes: {
         atualizado: "updated on {{data}}",
         pdf: {
@@ -1705,12 +1731,33 @@ const resources = {
         pergunta: {
           desc: "Uma IA responde o que quiser sobre mim (ex.: pergunta quem é você?).",
         },
+        hack: {
+          desc: "Minigame breach protocol: escolha os códigos e instale as sequências antes do tempo acabar (hack --facil | --dificil).",
+        },
+        ctf: {
+          desc: "Tem uma flag escondida no site. Ache e envie com ctf --enviar (ctf --placar mostra quem conseguiu).",
+        },
+        cifra: {
+          desc: "Codifica o seu texto ao vivo em César, ROT13, Vigenère, Base64, hex e SHA-256 (cifra olá | cifra --decodificar).",
+        },
+        whoami: {
+          desc: "O que qualquer site sabe sobre você sem pedir permissão, e dicas de privacidade.",
+        },
+        categoria: {
+          seguranca: "segurança",
+        },
         dicas: {
           titulo: "Dicas:",
           historico: "↑ / ↓ navegam pelos comandos já digitados",
           autocomplete: "Tab completa os comandos; Tab duas vezes lista as opções.",
+          tudo: "ajuda --tudo descreve todos os comandos.",
         },
       },
+      // Mensagens de uso (o App mostra antes de baixar o comando); o resto dos
+      // textos de cada comando novo fica em src/i18n/<comando>.js
+      hack: { uso: "Uso: hack [--facil | --dificil]" },
+      ctf: { uso: "Uso: ctf [--enviar | --placar] (ou ctf <flag>)" },
+      cifra: { uso: "Uso: cifra <texto> [--decodificar]" },
       lattes: {
         atualizado: "atualizado em {{data}}",
         pdf: {

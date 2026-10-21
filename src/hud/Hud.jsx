@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { skillsMeta } from "../data/skillsMeta";
 import { AVATAR, GITHUB_URL, NASCIMENTO, continentes } from "../data/sobreData";
+import { EVENTO_HUD } from "./eventos";
 import "./Hud.css";
 
 // HUD "netrunner" em volta do terminal: cabeçalho, painel do perfil à
@@ -140,14 +141,33 @@ function Cyberware() {
   );
 }
 
+// Quanto tempo o "ACCESS GRANTED" fica no painel depois de vencer o "hack"
+const ACESSO_MS = 4000;
+
 function Breach() {
   const { t } = useTranslation();
+  const [acesso, setAcesso] = useState(false);
+  useEffect(() => {
+    let timer;
+    const ouvir = (e) => {
+      if (e.detail?.tipo !== "breach") return;
+      setAcesso(true);
+      clearTimeout(timer);
+      timer = setTimeout(() => setAcesso(false), ACESSO_MS);
+    };
+    window.addEventListener(EVENTO_HUD, ouvir);
+    return () => {
+      window.removeEventListener(EVENTO_HUD, ouvir);
+      clearTimeout(timer);
+    };
+  }, []);
   return (
     <section className="hud-painel hud-painel-vermelho hud-breach" aria-hidden="true">
       <div className="hud-painel-titulo hud-vermelho hud-breach-titulo">
         <span>BREACH PROTOCOL</span>
         <span className="hud-dim">{t("hud.buffer")}</span>
       </div>
+      {acesso && <div className="hud-breach-acesso">ACCESS GRANTED</div>}
       <div className="hud-breach-grade">
         {BREACH.map((linha, i) =>
           linha.map((codigo, j) => (

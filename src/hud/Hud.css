@@ -265,9 +265,50 @@
 }
 
 /* Breach protocol (decorativo) */
+.hud-breach {
+  position: relative;
+}
+
 .hud-breach-titulo {
   display: flex;
   justify-content: space-between;
+}
+
+/* "ACCESS GRANTED" por cima da grade quando o visitante vence o "hack"
+   (evento do hud/eventos.js). Mesma faixa amarela do RetroLoader. */
+.hud-breach-acesso {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 50%;
+  z-index: 1;
+  padding: 8px 0;
+  background: var(--hud-fill);
+  color: var(--hud-on-fill);
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.16em;
+  text-align: center;
+  transform: translateY(-50%);
+  animation: hud-acesso 0.2s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes hud-acesso-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes hud-acesso {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scaleY(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
 }
 
 .hud-breach-grade {
@@ -665,6 +706,11 @@
   .hud-breach-ativa,
   .hud-ticker-faixa {
     animation: none;
+  }
+
+  /* Sem movimento: a faixa só aparece com um fade */
+  .hud-breach-acesso {
+    animation-name: hud-acesso-fade;
   }
 }
 

@@ -32,6 +32,18 @@ Estudante de Ciência da Computação na PUC Minas e membro da
 | `design` | Design system do portfólio |
 | `limpar` / `clear` | Limpa o terminal |
 
+O `ajuda` mostra a tabela acima e, embaixo, uma linha por categoria com os comandos dela.
+`ajuda --tudo` (`help --all`) mostra todos com a descrição.
+
+**Segurança**
+
+| Comando | O que faz |
+| --- | --- |
+| `hack` / `breach` | Minigame breach protocol (`--facil`, `--dificil`); vencer acende "ACCESS GRANTED" no HUD |
+| `ctf` / `flag` | Capture the flag: pistas, placar (`--placar`) e envio (`--enviar` ou `ctf <flag>`) |
+| `cifra` / `cipher` | `cifra <texto>`: César, ROT13, Vigenère, Base64, hex e SHA-256 ao vivo (`--decodificar`) |
+| `whoami` | O que qualquer site sabe sobre você sem pedir permissão, com dicas de privacidade |
+
 Links diretos: `?cmd=sobre` abre o site já rodando um comando e `?lang=en` abre em inglês.
 
 ## Visual (HUD netrunner)
@@ -87,8 +99,26 @@ Contas e chaves (vão nas variáveis de ambiente da Vercel; veja o `.env.example
   2. `livro_visitas.sql`
   3. `livro_visitas_limites.sql` (nome de 1–50 e mensagem de 1–500 caracteres; no máximo 5
      mensagens por minuto e 200 por dia, conferidos no próprio banco)
+  4. `ctf.sql` (placar e conferência da flag do `ctf`, veja abaixo)
 - **Gemini** (`GEMINI_API_KEY`) para o `pergunta`. Depois de qualquer mudança no conteúdo, rode `npm run ask` para atualizar `api/_askPerfil.js`.
 - Opcionais: `GITHUB_SITE_TOKEN` (stats mais completos) e reCAPTCHA no contato.
+
+### CTF (comando `ctf`)
+
+A flag fica dividida em 3 pedaços codificados: um comentário em Base64 no `index.html`, uma
+mensagem em hex no console (`src/main.jsx`) e o cabeçalho `X-Ctf-Hint` (ROT13) que o
+`vercel.json` manda junto com o `public/robots.txt`. O site não conhece a flag: o banco guarda
+só o SHA-256 dela em `ctf_config`, e a função `ctf_enviar` confere o envio, com no máximo 30
+tentativas por minuto, 2000 por dia e 50 nomes novos por dia no placar.
+
+Nunca escreva a flag em texto puro no repositório (commits, issues, PRs ou comentários). Para
+trocar a flag:
+
+1. Escolha a flag nova no formato `bicalho{...}` e divida em 3 pedaços.
+2. Codifique cada pedaço (o próprio `cifra` faz isso) e troque nos três lugares acima.
+3. No SQL Editor do Supabase (e não num arquivo do repositório), rode:
+   `update public.ctf_config set flag_sha256 = encode(extensions.digest('<flag nova>', 'sha256'), 'hex') where id = 1;`
+4. Opcional: zere o placar com `delete from public.ctf_placar;`.
 
 Conteúdo:
 

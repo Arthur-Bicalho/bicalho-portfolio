@@ -38,6 +38,10 @@
       ]
     },
     {
+      "source": "/robots.txt",
+      "headers": [{ "key": "X-Ctf-Hint", "value": "3/3 (rot13): _u34q3ef}" }]
+    },
+    {
       "source": "/quake/(.*)",
       "headers": [
         {

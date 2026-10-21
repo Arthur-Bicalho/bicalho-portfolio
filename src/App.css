@@ -85,11 +85,12 @@ html {
 }
 
 /* Palavras de um comando digitado: inteiras na mesma linha (só uma palavra
-   maior que a tela inteira ainda quebra no meio) */
+   maior que a tela inteira ainda quebra no meio). O inline-block já impede a
+   quebra no meio de uma palavra que cabe; com nowrap, a que não cabe era
+   cortada em vez de quebrar (ex.: "cifra <texto longo sem espaço>"). */
 .terminal-palavra {
   display: inline-block;
   max-width: 100%;
-  white-space: nowrap;
   overflow-wrap: anywhere;
 }
 
