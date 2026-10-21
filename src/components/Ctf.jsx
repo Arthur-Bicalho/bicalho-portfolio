@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../i18n/ctf";
 import useCommandAtTop from "../terminal/useCommandAtTop";
-import { supabase } from "../lib/supabase";
+import { obterSupabase, supabaseConfigurado } from "../lib/supabase";
 import "./Cli.css";
 import "./BotaoVoltar.css";
 import "./Ctf.css";
@@ -33,18 +33,23 @@ const chaveDoErro = (error) => {
 
 function Placar() {
   const { t, i18n } = useTranslation();
-  const [estado, setEstado] = useState(supabase ? "carregando" : "sem_banco");
+  const [estado, setEstado] = useState(supabaseConfigurado ? "carregando" : "sem_banco");
   const [nomes, setNomes] = useState([]);
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    if (!supabase) return undefined;
+    if (!supabaseConfigurado) return undefined;
     let vivo = true;
-    supabase
-      .from("ctf_placar")
-      .select("nome, created_at", { count: "exact" })
-      .order("id", { ascending: true })
-      .limit(TOP)
+    obterSupabase()
+      .then((supabase) =>
+        supabase
+          ? supabase
+              .from("ctf_placar")
+              .select("nome, created_at", { count: "exact" })
+              .order("id", { ascending: true })
+              .limit(TOP)
+          : { error: true },
+      )
       .then(({ data, count, error }) => {
         if (!vivo) return;
         if (error) {
@@ -107,10 +112,10 @@ function Envio({ flagInicial, onExit }) {
     if (enviando.current) return;
     enviando.current = true;
     setPasso("enviando");
-    const { data, error } = await supabase.rpc("ctf_enviar", {
-      flag: flag.trim(),
-      nome: nome.trim(),
-    });
+    const supabase = await obterSupabase();
+    const { data, error } = supabase
+      ? await supabase.rpc("ctf_enviar", { flag: flag.trim(), nome: nome.trim() })
+      : { error: true };
     enviando.current = false;
     if (error) {
       setResultado({ chave: chaveDoErro(error), ok: false });
@@ -127,7 +132,7 @@ function Envio({ flagInicial, onExit }) {
     setPasso("flag");
   };
 
-  if (!supabase) return <p className="cli-hint">{t("ctf.nao_configurado")}</p>;
+  if (!supabaseConfigurado) return <p className="cli-hint">{t("ctf.nao_configurado")}</p>;
 
   return (
     <div className="ctf-envio">

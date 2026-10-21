@@ -1,4 +1,4 @@
-import { supabase } from "./supabase";
+import { obterSupabase, supabaseConfigurado } from "./supabase";
 
 // Contador de visitas da tela de boas-vindas (SQL em supabase/contador_visitas.sql).
 //
@@ -37,10 +37,17 @@ export function obterVisitas() {
   if (promessa) return promessa;
 
   promessa = (async () => {
-    if (!supabase) return null;
+    if (!supabaseConfigurado) return null;
 
+    // Antes de qualquer await: o comando do link direto (?cmd=) também marca
+    // atividade, e não pode fazer uma visita nova parecer a mesma sessão
     const novaVisita = Date.now() - lerUltimaAtividade() > JANELA_MS;
     marcarAtividade();
+
+    // O cliente desce sob demanda (ver lib/supabase.js): o número aparece um
+    // instante depois da boas-vindas, sem travar a tela
+    const supabase = await obterSupabase();
+    if (!supabase) return null;
 
     if (novaVisita) {
       const { data, error } = await supabase.rpc("registrar_visita");

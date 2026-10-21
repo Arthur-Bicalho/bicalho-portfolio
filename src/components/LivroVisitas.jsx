@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import useCommandAtTop from "../terminal/useCommandAtTop";
 import { useTranslation } from "react-i18next";
-import { supabase } from "../lib/supabase";
+import { obterSupabase, supabaseConfigurado } from "../lib/supabase";
 import "./Cli.css";
 import "./LivroVisitas.css";
 import "./BotaoVoltar.css";
@@ -55,9 +55,15 @@ const LivroVisitas = ({ mode = "home", onExit }) => {
 
   async function fetchMessages() {
     // Sem Supabase configurado, a lista fica vazia
-    if (!supabase) return;
+    if (!supabaseConfigurado) return;
 
     setLoading(true);
+
+    const supabase = await obterSupabase();
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
 
     const { data, error } = await supabase
       .from("guestbook_messages")
@@ -81,13 +87,19 @@ const LivroVisitas = ({ mode = "home", onExit }) => {
     const time = now.toLocaleString();
 
     // Sem Supabase configurado, avisa o visitante em vez de não fazer nada
-    if (!supabase) {
+    if (!supabaseConfigurado) {
       setStep("error");
       return;
     }
 
     // Enquanto grava, o campo some e aparece "enviando..."
     setStep("sending");
+
+    const supabase = await obterSupabase();
+    if (!supabase) {
+      setStep("error");
+      return;
+    }
 
     // Salva no Supabase
     const { error } = await supabase
@@ -159,12 +171,12 @@ const LivroVisitas = ({ mode = "home", onExit }) => {
       )}
 
       {/* Sem Supabase (variáveis não configuradas): list e add só avisam */}
-      {!supabase && (mode === "list" || mode === "add") && (
+      {!supabaseConfigurado && (mode === "list" || mode === "add") && (
         <p className="cli-hint">{t("guestbook.nao_configurado")}</p>
       )}
 
       {/* LIST */}
-      {supabase && mode === "list" && (
+      {supabaseConfigurado && mode === "list" && (
         <div className="guestbook-messages">
           {loading ? (
             <p className="cli-hint">{t("guestbook.carregando")}</p>
@@ -186,7 +198,7 @@ const LivroVisitas = ({ mode = "home", onExit }) => {
       {/* ADD - CLI */}
       {mode === "add" && (
         <div className="guestbook-cli-add">
-          {supabase && step === "name" && (
+          {supabaseConfigurado && step === "name" && (
             <>
               <p className="cli-hint">{t("guestbook.nome_label")}:</p>
               <div className="cli-input-line">
