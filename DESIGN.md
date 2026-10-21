@@ -192,6 +192,9 @@ Grade 5×5 de códigos hex no painel da direita; a coluna ativa acende em sequê
 ### Saídas de comando em CLI
 O vocabulário de classes que os comandos reaproveitam: `.command` (amarelo, 600), `.command-desc` (`--text-muted`), `.cli-hint` (dica), `.cli-success` (verde), `.cli-input-line` / `.cli-prefix` (campos de linha em estilo prompt), entradas com borda esquerda amarela (`border-left: 2px solid var(--accent)`) e `.autocomplete-options` (opções lado a lado). As classes `.command*` e `.cli-*` ficam em `src/components/Cli.css`, que cada comando importa (como o `BotaoVoltar.css`).
 
+### Barras em caracteres
+Gráficos dentro do terminal usam blocos de texto: `█` cheio e a fração da ponta em `▓▒░` (`ranking`), ou um bloco por unidade (`galo --stats`: `█` marcados em `--hud-line`, `▒` sofridos em `--hud-red`). Sempre com `white-space: pre`, `letter-spacing: 0` e `aria-hidden`, com o número em texto ao lado para leitores de tela. No `ranking`, as barras crescem com `scaleX` a partir da esquerda (600ms, `cubic-bezier(0.23, 1, 0.32, 1)`, 50ms entre uma e outra); com reduced motion, só fade. Percentual de 0 a 100 usa a `RetroBar` (aproveitamento do `galo --stats`).
+
 ### Recados para o HUD
 Um comando fala com o HUD por um evento na `window` (`avisarHud("breach")`, em `src/hud/eventos.js`), sem contexto do React. Hoje o único é o "ACCESS GRANTED" que o `hack` acende no BREACH PROTOCOL: uma faixa amarela que entra em 200ms (`cubic-bezier(0.23, 1, 0.32, 1)`) e, com reduced motion, só aparece com um fade.
 

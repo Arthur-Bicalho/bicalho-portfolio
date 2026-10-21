@@ -44,6 +44,17 @@ O `ajuda` mostra a tabela acima e, embaixo, uma linha por categoria com os coman
 | `cifra` / `cipher` | `cifra <texto>`: César, ROT13, Vigenère, Base64, hex e SHA-256 ao vivo (`--decodificar`) |
 | `whoami` | O que qualquer site sabe sobre você sem pedir permissão, com dicas de privacidade |
 
+**Dados**
+
+| Comando | O que faz |
+| --- | --- |
+| `ranking` / `top` | Os comandos mais usados pelos visitantes, num gráfico de barras em caracteres |
+| `agora` / `now` | O que estou estudando e construindo (`src/data/agoraData.js`) e o último push público |
+| `galo --stats` | Aproveitamento do Galo na temporada: gols, saldo, últimos 10 jogos e gols por jogo |
+
+O `ranking` conta cada comando no máximo uma vez por visita e envia só o nome dele, sem IP nem
+identificação. O banco aceita só os nomes da lista em `registrar_comando` e limita a frequência.
+
 Links diretos: `?cmd=sobre` abre o site já rodando um comando e `?lang=en` abre em inglês.
 
 ## Visual (HUD netrunner)
@@ -100,6 +111,8 @@ Contas e chaves (vão nas variáveis de ambiente da Vercel; veja o `.env.example
   3. `livro_visitas_limites.sql` (nome de 1–50 e mensagem de 1–500 caracteres; no máximo 5
      mensagens por minuto e 200 por dia, conferidos no próprio banco)
   4. `ctf.sql` (placar e conferência da flag do `ctf`, veja abaixo)
+  5. `ranking_comandos.sql` (ranking de comandos). Ao criar um comando novo, acrescente o nome
+     na lista `permitidos` de `registrar_comando` e rode o arquivo de novo.
 - **Gemini** (`GEMINI_API_KEY`) para o `pergunta`. Depois de qualquer mudança no conteúdo, rode `npm run ask` para atualizar `api/_askPerfil.js`.
 - Opcionais: `GITHUB_SITE_TOKEN` (stats mais completos) e reCAPTCHA no contato.
 
@@ -125,6 +138,7 @@ Conteúdo:
 - **Spotify**: os cards usam serviços que pedem para você entrar com o Spotify uma vez:
   [spotify-github-profile](https://spotify-github-profile.kittinanx.com/api/login) e
   [spotify-recently-played](https://spotify-recently-played.jeffreyca.workers.dev). Sem login, eles ficam escondidos e aparece só o link do seu perfil. Uma música para o player vai em `TRACK_ID` (`src/config/spotifyConfig.js`).
+- **Agora**: `src/data/agoraData.js` (texto em pt e en de cada item e o mês da última atualização).
 - **Projetos**: `src/data/projectsData.js` + títulos e descrições em `projetos.*` no i18n.
 - **Currículo em inglês** (opcional): salve `public/cv-en.pdf` e marque `en: true` em `CURRICULOS` (`src/components/Curriculo.jsx`).
 - **Níveis das habilidades**: ocultos. Para mostrar, ajuste `level` e mude `MOSTRAR_NIVEL` para `true` em `src/data/skillsMeta.js`.
