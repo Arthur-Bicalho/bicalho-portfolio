@@ -46,6 +46,11 @@ const Curriculo = lazyCommand(() => import("./components/Curriculo"));
 const Lattes = lazyCommand(() => import("./components/Lattes"), {
   fallbackKey: "lattes.carregando",
 });
+// Segurança: minigame breach protocol, CTF, cifras e o que o site sabe de você
+const Hack = lazyCommand(() => import("./components/Hack"));
+const Ctf = lazyCommand(() => import("./components/Ctf"));
+const Cifra = lazyCommand(() => import("./components/Cifra"));
+const Whoami = lazyCommand(() => import("./components/Whoami"));
 
 // Depois do boot, com o navegador ocioso, já baixa os comandos leves: o
 // primeiro uso de cada um abre na hora, sem "Carregando...". Ficam de fora os
@@ -67,6 +72,10 @@ const PRELOAD = [
   Basquete,
   DesignSystem,
   Ask,
+  Hack,
+  Ctf,
+  Cifra,
+  Whoami,
 ];
 
 const whenIdle = (fn) =>
@@ -184,16 +193,24 @@ function App() {
   const lastLine = terminalLineData[terminalLineData.length - 1];
   const isGuestBookAddOpen = lastLine?.type === LivroVisitas && lastLine?.props?.mode === "add";
 
-  // Jogo, contato e guestbook (add) usam o teclado: o terminal fica em pausa
-  const isTerminalPaused = isGameOpen || isContatoOpen || isGuestBookAddOpen;
+  // hack, cifra e o envio do ctf também têm campos ou teclas próprios
+  const isSegurancaOpen =
+    lastLine?.type === Hack ||
+    lastLine?.type === Cifra ||
+    (lastLine?.type === Ctf && lastLine?.props?.modo === "enviar");
+
+  // Jogo, contato, guestbook (add) e os acima usam o teclado: o terminal fica em pausa
+  const isTerminalPaused = isGameOpen || isContatoOpen || isGuestBookAddOpen || isSegurancaOpen;
 
   // Últimos comandos, para os botões da taskbar (o mais recente primeiro)
   const [recentes, setRecentes] = useState([]);
   const lembrarComando = (command, input) => {
     if (command.name === "limpar") return;
-    // "pergunta quem é você?" vira só "pergunta"; os outros guardam a opção
+    // "pergunta quem é você?" vira só "pergunta" (e "ctf <flag>", só "ctf",
+    // para a flag não ficar num botão); os outros guardam a opção
     const palavras = input.trim().split(/\s+/);
-    const resumo = command.name === "pergunta" ? palavras[0] : palavras.slice(0, 2).join(" ");
+    const soONome = command.name === "pergunta" || command.name === "ctf";
+    const resumo = soONome ? palavras[0] : palavras.slice(0, 2).join(" ");
     setRecentes((atual) =>
       [resumo, ...atual.filter((item) => item !== resumo)].slice(0, MAX_RECENTES),
     );
@@ -263,7 +280,12 @@ function App() {
           response = <SobreMim />;
           break;
         case "ajuda":
-          response = <Ajuda />;
+          // "ajuda --tudo" | "help --all": a tabela completa, com as categorias
+          if (subCommand && !command.subcommands.includes(subCommand)) {
+            response = getInvalidCommandOutput(subCommand);
+            break;
+          }
+          response = <Ajuda tudo={Boolean(subCommand)} />;
           break;
         case "pergunta": {
           // "pergunta <texto>" ou "ask <texto>": a IA responde em primeira
@@ -411,6 +433,53 @@ function App() {
           }
           break;
         }
+        case "hack": {
+          // "hack" (normal: 2 sequências), "--facil" | "--easy" (1) e
+          // "--dificil" | "--hard" (3)
+          const niveis = { "--facil": "facil", "--easy": "facil", "--dificil": "dificil", "--hard": "dificil" };
+          if (subCommand && !niveis[subCommand]) {
+            response = <TerminalOutput>{t("hack.uso")}</TerminalOutput>;
+            break;
+          }
+          response = <Hack nivel={niveis[subCommand] ?? "normal"} onExit={exitComponent} />;
+          break;
+        }
+        case "ctf": {
+          // "ctf" explica e mostra o placar; "--placar" só o placar; "--enviar"
+          // abre o envio, e "ctf <flag>" já abre com a flag (como foi digitada,
+          // sem as minúsculas dos args)
+          if (!subCommand) {
+            response = <Ctf modo="inicio" />;
+          } else if (["--placar", "--scoreboard"].includes(subCommand)) {
+            response = <Ctf modo="placar" />;
+          } else if (["--enviar", "--submit"].includes(subCommand)) {
+            response = <Ctf modo="enviar" onExit={exitComponent} />;
+          } else if (subCommand.startsWith("-")) {
+            response = <TerminalOutput>{t("ctf.uso")}</TerminalOutput>;
+          } else {
+            const flag = input.trim().replace(/^\S+\s*/, "");
+            response = <Ctf modo="enviar" flag={flag} onExit={exitComponent} />;
+          }
+          break;
+        }
+        case "cifra": {
+          // "cifra <texto>" (como foi digitado); "--decodificar" | "--decode"
+          // em qualquer posição troca o sentido
+          const palavras = input.trim().split(/\s+/).slice(1);
+          const opcao = (p) => ["--decodificar", "--decode"].includes(p.toLowerCase());
+          if (palavras.some((p) => p.startsWith("--") && !opcao(p))) {
+            response = <TerminalOutput>{t("cifra.uso")}</TerminalOutput>;
+            break;
+          }
+          const texto = palavras.filter((p) => !opcao(p)).join(" ");
+          response = (
+            <Cifra texto={texto} decodificar={palavras.some(opcao)} onExit={exitComponent} />
+          );
+          break;
+        }
+        case "whoami":
+          response = <Whoami />;
+          break;
         default:
           break;
       }

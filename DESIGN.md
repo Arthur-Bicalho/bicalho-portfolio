@@ -190,7 +190,10 @@ Barra `--hud-taskbar` com borda superior amarela de 2px. O botão iniciar é ama
 Grade 5×5 de códigos hex no painel da direita; a coluna ativa acende em sequência (`.hud-breach-ativa`, sem animação com reduced motion).
 
 ### Saídas de comando em CLI
-O vocabulário de classes que os comandos reaproveitam: `.command` (amarelo, 600), `.command-desc` (`--text-muted`), `.cli-hint` (dica), `.cli-success` (verde), `.cli-input-line` / `.cli-prefix` (campos de linha em estilo prompt), entradas com borda esquerda amarela (`border-left: 2px solid var(--accent)`) e `.autocomplete-options` (opções lado a lado).
+O vocabulário de classes que os comandos reaproveitam: `.command` (amarelo, 600), `.command-desc` (`--text-muted`), `.cli-hint` (dica), `.cli-success` (verde), `.cli-input-line` / `.cli-prefix` (campos de linha em estilo prompt), entradas com borda esquerda amarela (`border-left: 2px solid var(--accent)`) e `.autocomplete-options` (opções lado a lado). As classes `.command*` e `.cli-*` ficam em `src/components/Cli.css`, que cada comando importa (como o `BotaoVoltar.css`).
+
+### Recados para o HUD
+Um comando fala com o HUD por um evento na `window` (`avisarHud("breach")`, em `src/hud/eventos.js`), sem contexto do React. Hoje o único é o "ACCESS GRANTED" que o `hack` acende no BREACH PROTOCOL: uma faixa amarela que entra em 200ms (`cubic-bezier(0.23, 1, 0.32, 1)`) e, com reduced motion, só aparece com um fade.
 
 ## Do's and Don'ts
 

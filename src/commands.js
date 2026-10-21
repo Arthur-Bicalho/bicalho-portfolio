@@ -2,6 +2,8 @@ import { nbaSubcommands } from './config/nbaConfig';
 
 // Comandos do terminal. "subcommands" alimenta o autocomplete (Tab) da
 // segunda palavra, ex.: "tema --c" + Tab → "tema --claro".
+// "categoria" agrupa os comandos no "ajuda": os que não têm aparecem na
+// tabela principal e os outros numa linha por grupo (ver components/Ajuda.jsx)
 export const commandList = {
   sobre: {
     name: 'sobre',
@@ -17,6 +19,8 @@ export const commandList = {
   ajuda: {
     name: 'ajuda',
     aliases: ['help'],
+    // --tudo | --all mostram também os comandos das categorias, com descrição
+    subcommands: ['--tudo', '--all'],
   },
   contato: {
     name: 'contato',
@@ -116,4 +120,36 @@ export const commandList = {
     name: 'design',
     aliases: ['ds', 'designsystem'],
   },
+  hack: {
+    name: 'hack',
+    aliases: ['breach'],
+    categoria: 'seguranca',
+    // Minigame breach protocol (ver components/Hack.jsx): a dificuldade
+    // muda o número de sequências (1, 2 ou 3)
+    subcommands: ['--facil', '--dificil', '--easy', '--hard'],
+  },
+  ctf: {
+    name: 'ctf',
+    aliases: ['flag'],
+    categoria: 'seguranca',
+    // "ctf" explica e mostra o placar; "ctf --enviar" (ou "ctf <flag>")
+    // abre o envio. A flag é conferida no banco (supabase/ctf.sql)
+    subcommands: ['--enviar', '--submit', '--placar', '--scoreboard'],
+  },
+  cifra: {
+    name: 'cifra',
+    aliases: ['cipher', 'cripto'],
+    categoria: 'seguranca',
+    // cifra <texto>: César, ROT13, Vigenère, Base64, hex e SHA-256 ao vivo
+    // (ver components/Cifra.jsx); --decodificar | --decode faz o caminho de volta
+    subcommands: ['--decodificar', '--decode'],
+  },
+  whoami: {
+    name: 'whoami',
+    aliases: ['quemsou'],
+    categoria: 'seguranca',
+  },
 };
+
+// Ordem das categorias no "ajuda" (os nomes ficam em ajuda.categoria.* no i18n)
+export const categorias = ['seguranca'];

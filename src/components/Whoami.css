@@ -1,0 +1,118 @@
+/* Comando "whoami": pares rótulo/valor como no neofetch e dicas com a borda
+   amarela das entradas do guestbook. Só tokens do theme.css. */
+.whoami {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 0 1.5rem 1rem;
+  min-width: 0;
+}
+
+.whoami p {
+  margin: 0;
+}
+
+.whoami-titulo {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 1.15em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hud-line);
+}
+
+.whoami-intro {
+  color: var(--text-muted);
+}
+
+.whoami-dados {
+  margin: 0;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.15rem 2ch;
+}
+
+/* A linha some do layout e os filhos viram células da grade */
+.whoami-linha {
+  display: contents;
+}
+
+.whoami-dados dt {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.whoami-dados dd {
+  margin: 0;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.whoami-dados .whoami-ua {
+  color: var(--text-muted);
+  font-size: 0.85em;
+}
+
+.whoami-aviso {
+  color: var(--text-dim);
+  font-size: 0.85em;
+  max-width: 70ch;
+}
+
+.whoami-secao {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--accent);
+  max-width: 75ch;
+}
+
+.whoami-rotulo {
+  margin: 0;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hud-dim);
+}
+
+.whoami-secao p {
+  color: var(--text-soft);
+}
+
+.whoami-dicas {
+  margin: 0;
+  padding-left: 2ch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  color: var(--text-soft);
+}
+
+.whoami-dicas li::marker {
+  color: var(--hud-red);
+}
+
+/* Telas estreitas: rótulo em cima do valor */
+@media (max-width: 768px) {
+  .whoami {
+    padding: 0 0.5rem 1rem;
+  }
+
+  .whoami-dados {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .whoami-dados dd {
+    margin-bottom: 0.35rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .whoami {
+    padding: 0 0 1rem;
+  }
+}

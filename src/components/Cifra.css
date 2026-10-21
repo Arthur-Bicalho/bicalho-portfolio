@@ -1,0 +1,194 @@
+/* Comando "cifra": campo em estilo CLI (Cli.css) e uma lista de resultados
+   com a borda amarela das entradas do guestbook. Só tokens do theme.css. */
+.cifra {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 0 1.5rem 1rem;
+  min-width: 0;
+}
+
+.cifra p {
+  margin: 0;
+}
+
+.cifra-titulo {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 1.15em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hud-line);
+}
+
+.cifra-intro {
+  color: var(--text-muted);
+  max-width: 62ch;
+}
+
+.cifra-controles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cifra .cifra-input {
+  flex: 1;
+  width: auto;
+}
+
+.cifra-opcoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem 2rem;
+}
+
+.cifra-modo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.cifra-modo legend {
+  width: 100%;
+  padding: 0;
+  margin-bottom: 0.25rem;
+}
+
+.cifra-rotulo {
+  display: block;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hud-dim);
+}
+
+.cifra-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5ch;
+  min-height: 32px;
+  cursor: pointer;
+}
+
+.cifra-radio input {
+  accent-color: var(--accent);
+  margin: 0;
+}
+
+.cifra-opcao {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.cifra-numero,
+.cifra-chave {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-input);
+  border-radius: 0;
+  color: var(--text);
+  font: inherit;
+  padding: 4px 0;
+  outline: none;
+}
+
+.cifra-numero {
+  width: 5ch;
+}
+
+.cifra-chave {
+  width: 14ch;
+}
+
+.cifra-numero:focus,
+.cifra-chave:focus {
+  border-bottom-color: var(--accent);
+}
+
+.cifra-lista {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.cifra-item {
+  min-width: 0;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--accent);
+}
+
+.cifra-nome {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.cifra-valor,
+.cifra-explicacao {
+  margin: 0;
+}
+
+/* Saída de texto do visitante: quebra em qualquer ponto, nunca estoura */
+.cifra-valor {
+  color: var(--text);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.cifra-explicacao {
+  color: var(--text-dim);
+  font-size: 0.85em;
+  max-width: 70ch;
+}
+
+.cifra-dim {
+  color: var(--text-dim);
+}
+
+.cifra-dica {
+  color: var(--text-dim);
+  font-size: 0.85em;
+}
+
+.cifra .btn-voltar-terminal {
+  margin-top: 0;
+}
+
+/* Toque: rádios e campos pequenos ganham 44px de altura */
+@media (pointer: coarse) {
+  .cifra-radio,
+  .cifra-numero,
+  .cifra-chave {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cifra {
+    padding: 0 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cifra {
+    padding: 0 0 1rem;
+  }
+
+  /* iOS dá zoom em campos com fonte menor que 16px */
+  .cifra-numero,
+  .cifra-chave {
+    font-size: 16px;
+  }
+
+  .cifra-dica {
+    display: none;
+  }
+}

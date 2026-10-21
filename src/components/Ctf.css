@@ -1,0 +1,145 @@
+/* Comando "ctf": pistas, placar e envio em estilo CLI (Cli.css). Só tokens
+   do theme.css. */
+.ctf {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 0 1.5rem 1rem;
+  min-width: 0;
+}
+
+.ctf p {
+  margin: 0;
+}
+
+.ctf-titulo {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 1.15em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hud-line);
+}
+
+.ctf-intro,
+.ctf-como {
+  color: var(--text-muted);
+  max-width: 70ch;
+}
+
+.ctf-como {
+  color: var(--text);
+}
+
+.ctf-secao {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--accent);
+  max-width: 75ch;
+  min-width: 0;
+}
+
+.ctf-rotulo {
+  margin: 0;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hud-dim);
+}
+
+.ctf-pistas {
+  margin: 0;
+  padding-left: 2ch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  color: var(--text-soft);
+}
+
+.ctf-pistas li::marker {
+  color: var(--hud-red);
+}
+
+.ctf-placar {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.ctf-placar li {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5ch;
+  min-width: 0;
+}
+
+.ctf-posicao {
+  color: var(--hud-red);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* Nome do visitante: quebra em qualquer ponto, nunca estoura */
+.ctf-nome {
+  color: var(--text);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ctf-data {
+  margin-left: auto;
+  color: var(--text-dim);
+  font-size: 0.85em;
+  flex-shrink: 0;
+}
+
+.ctf-envio {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.ctf .ctf-input {
+  flex: 1;
+  width: auto;
+}
+
+.ctf-resultado {
+  margin-top: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.ctf-erro {
+  color: var(--hud-red);
+}
+
+.ctf-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.ctf-botoes .btn-voltar-terminal {
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .ctf {
+    padding: 0 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ctf {
+    padding: 0 0 1rem;
+  }
+}

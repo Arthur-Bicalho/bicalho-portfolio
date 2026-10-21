@@ -9,6 +9,9 @@ import App from "./App.jsx";
 import ThemeProvider from "./theme/ThemeProvider";
 import "./i18n";
 
+// Pista do comando "ctf" para quem abre o console (ver components/Ctf.jsx)
+console.info("ctf 2/3 (hex): 5f 63 30 6e 73 30 6c 33");
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     {/* Router: permite ler o ?cmd= dos links diretos (seu-site.vercel.app/?cmd=curriculo) */}

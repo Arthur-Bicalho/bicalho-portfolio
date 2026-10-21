@@ -1,0 +1,8 @@
+# Olá, robô: pode indexar tudo.
+# Hello, robot: feel free to index everything.
+#
+# ctf 3/3: o último pedaço está no cabeçalho HTTP X-Ctf-Hint desta resposta.
+# ctf 3/3: the last piece is in this response's X-Ctf-Hint HTTP header.
+
+User-agent: *
+Allow: /
