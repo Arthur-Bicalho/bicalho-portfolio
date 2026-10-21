@@ -63,12 +63,30 @@ e os comandos que dependem delas avisam que ainda não estão configurados.
 2. Em *Settings → Environment Variables*, crie as mesmas variáveis do `.env.local`.
 3. Troque `arthur-bicalho.vercel.app` em `index.html` pelo endereço que a Vercel der ao projeto.
 
+### Cabeçalhos de segurança
+
+O `vercel.json` manda em todas as rotas uma `Content-Security-Policy` que libera só as origens
+que o site usa, além de `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` e
+`Permissions-Policy`. O `npm run preview` aplica os mesmos cabeçalhos (lidos do `vercel.json`),
+então dá para testar o build com a CSP de verdade. Ao usar um serviço externo novo (API, imagem,
+iframe), acrescente a origem na diretiva certa da CSP. Ao mudar o script inline do `index.html`,
+gere o hash de novo (o comando está em `vite.config.js`).
+
 ## O que ainda falta configurar
 
 Contas e chaves (vão nas variáveis de ambiente da Vercel; veja o `.env.example`):
 
-- **EmailJS** para o formulário do `contato`.
-- **Supabase** para o `guestbook` e o contador de visitas (rode os dois arquivos de `supabase/` no SQL Editor).
+- **EmailJS** para o formulário do `contato`. O e-mail de confirmação para quem escreveu fica
+  **desligado** por padrão (`VITE_EMAILJS_CONFIRMACAO=false`): ele iria para qualquer endereço
+  digitado, e alguém poderia usar o site para mandar e-mails a terceiros pela sua conta. Ligue com
+  `VITE_EMAILJS_CONFIRMACAO=true` só com o reCAPTCHA conferido no template de confirmação.
+  O formulário também deixa um envio a cada 60 s por navegador (só cortesia; quem protege é o reCAPTCHA).
+- **Supabase** para o `guestbook` e o contador de visitas. Rode os arquivos de `supabase/` no
+  SQL Editor, nesta ordem:
+  1. `contador_visitas.sql`
+  2. `livro_visitas.sql`
+  3. `livro_visitas_limites.sql` (nome de 1–50 e mensagem de 1–500 caracteres; no máximo 5
+     mensagens por minuto e 200 por dia, conferidos no próprio banco)
 - **Gemini** (`GEMINI_API_KEY`) para o `pergunta`. Depois de qualquer mudança no conteúdo, rode `npm run ask` para atualizar `api/_askPerfil.js`.
 - Opcionais: `GITHUB_SITE_TOKEN` (stats mais completos) e reCAPTCHA no contato.
 

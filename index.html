@@ -41,15 +41,12 @@
 
     <!-- X/Twitter: imagem grande; título, descrição e imagem vêm das tags og: -->
     <meta name="twitter:card" content="summary_large_image" />
-    <script>
-      // Aplica o tema salvo antes do React carregar (evita piscar o dark)
-      try {
-        var saved = localStorage.getItem("bicalho-theme");
-        if (saved === "light" || saved === "galo") {
-          document.documentElement.dataset.theme = saved;
-        }
-      } catch (e) {}
-    </script>
+    <!-- Aplica o tema salvo antes do React carregar (evita piscar o dark).
+         A Content-Security-Policy (vercel.json) libera este script pelo hash
+         sha256 do conteúdo: ele fica numa linha só para o hash não mudar com
+         o fim de linha (CRLF no Windows, LF na Vercel). Mudou uma letra aqui,
+         gere o hash de novo (ver o comentário em vite.config.js). -->
+    <script>try{var saved=localStorage.getItem("bicalho-theme");if(saved==="light"||saved==="galo"){document.documentElement.dataset.theme=saved}}catch(e){}</script>
   </head>
   <body>
     <div id="root"></div>

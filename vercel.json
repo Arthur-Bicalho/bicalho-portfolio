@@ -14,5 +14,37 @@
       "source": "/api/github/repo-views",
       "destination": "https://views-counter.vercel.app/badge"
     }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), hid=(), bluetooth=(), midi=(), magnetometer=(), gyroscope=(), accelerometer=(), display-capture=(), xr-spatial-tracking=(), fullscreen=(self)"
+        }
+      ]
+    },
+    {
+      "source": "/((?!quake/).*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-QELGvvqaUFUM8w37J8lAFX6mzKCH/TOD2LPHVrIroDg=' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://a.espncdn.com https://opengraph.githubassets.com https://avatars.githubusercontent.com https://spotify-github-profile.kittinanx.com https://spotify-recently-played.jeffreyca.workers.dev https://lastfm-recently-played.jeffreyca.workers.dev https://www.gstatic.com/recaptcha/; font-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.emailjs.com https://api.github.com https://site.api.espn.com https://github-contributions-api.jogruber.de https://www.google.com/recaptcha/; frame-src 'self' https://open.spotify.com https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/; worker-src 'self' blob:; media-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+        }
+      ]
+    },
+    {
+      "source": "/quake/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+        }
+      ]
+    }
   ]
 }

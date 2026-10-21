@@ -7,6 +7,21 @@ import "./BotaoVoltar.css";
 import emailjs from "@emailjs/browser";
 import EMAILJS_CONFIG from "../config/emailJsConfig";
 
+// Mesmos limites do banco (supabase/livro_visitas_limites.sql). Aqui é só
+// conforto: quem garante é o CHECK e o trigger de lá.
+const MAX_NOME = 50;
+const MAX_MENSAGEM = 500;
+
+// Erro do Supabase → texto traduzido. PT429 é o limite de frequência do
+// trigger; 23514 é o CHECK de tamanho.
+const chaveDoErro = (error) => {
+  if (error?.code === "PT429") {
+    return error.hint === "limite_dia" ? "guestbook.erro_limite_dia" : "guestbook.erro_limite";
+  }
+  if (error?.code === "23514") return "guestbook.erro_tamanho";
+  return "guestbook.erro";
+};
+
 const LivroVisitas = ({ mode = "home", onExit }) => {
   const { t } = useTranslation();
 
@@ -17,6 +32,7 @@ const LivroVisitas = ({ mode = "home", onExit }) => {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [step, setStep] = useState("name");
+  const [erro, setErro] = useState("guestbook.erro");
   // Trava de envio: o Enter apertado duas vezes rápido (antes de o Supabase
   // responder) chamava o handleSubmit duas vezes e gravava a mensagem em dobro.
   // Ref, e não state, porque o segundo Enter chega antes de o React renderizar.
@@ -73,10 +89,13 @@ const LivroVisitas = ({ mode = "home", onExit }) => {
     setStep("sending");
 
     // Salva no Supabase
-    const { error } = await supabase.from("guestbook_messages").insert([{ name, message }]);
+    const { error } = await supabase
+      .from("guestbook_messages")
+      .insert([{ name: name.trim(), message: message.trim() }]);
 
     if (error) {
       console.error(error);
+      setErro(chaveDoErro(error));
       setStep("error");
       return;
     }
@@ -85,7 +104,7 @@ const LivroVisitas = ({ mode = "home", onExit }) => {
     emailjs
       .send(
         EMAILJS_CONFIG.SERVICE_ID,
-        EMAILJS_CONFIG.TEMPLATE_ID_FOR_ME,
+        EMAILJS_CONFIG.TEMPLATE_ID_GUESTBOOK,
         {
           name: name,
           email: "",
@@ -175,6 +194,8 @@ const LivroVisitas = ({ mode = "home", onExit }) => {
                   className="cli-input"
                   type="text"
                   value={name}
+                  maxLength={MAX_NOME}
+                  aria-label={t("guestbook.nome_label")}
                   autoFocus
                   onChange={(e) => setName(e.target.value)}
                   onKeyDown={(e) => {
@@ -196,6 +217,9 @@ const LivroVisitas = ({ mode = "home", onExit }) => {
                   className="cli-input"
                   type="text"
                   value={message}
+                  maxLength={MAX_MENSAGEM}
+                  aria-label={t("guestbook.mensagem_label")}
+                  aria-describedby="guestbook-contador"
                   autoFocus
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyDown={async (e) => {
@@ -205,6 +229,9 @@ const LivroVisitas = ({ mode = "home", onExit }) => {
                   }}
                 />
               </div>
+              <p id="guestbook-contador" className="cli-hint">
+                {message.length}/{MAX_MENSAGEM}
+              </p>
             </>
           )}
 
@@ -212,7 +239,11 @@ const LivroVisitas = ({ mode = "home", onExit }) => {
 
           {step === "done" && <p className="cli-success">{t("guestbook.sucesso")}</p>}
 
-          {step === "error" && <p className="cli-hint">{t("guestbook.erro")}</p>}
+          {step === "error" && (
+            <p className="cli-hint" role="alert">
+              {t(erro)}
+            </p>
+          )}
 
           <br />
 
