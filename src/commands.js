@@ -173,7 +173,36 @@ export const commandList = {
     // "indicar" mostra as indicações aprovadas; --enviar | --add abre o envio
     subcommands: ['--enviar', '--add', '--lista', '--list'],
   },
+  mapa: {
+    name: 'mapa',
+    aliases: ['map'],
+    categoria: 'idiomas',
+    // mapa <país>: já abre com o país escolhido (ver data/paisesData.js; a
+    // lista fica aqui para os textos dos países não pesarem no bundle inicial)
+    subcommands: [
+      'brasil', 'argentina', 'chile', 'estados-unidos', 'alemanha',
+      'portugal', 'espanha', 'italia', 'holanda', 'belgica',
+    ],
+  },
+  traduzir: {
+    name: 'traduzir',
+    aliases: ['translate'],
+    categoria: 'idiomas',
+    // traduzir <texto>: pt, en, de e es pela IA do servidor (api/_traduzir.js)
+  },
+  deutsch: {
+    name: 'deutsch',
+    aliases: ['alemao', 'german'],
+    categoria: 'idiomas',
+    // A palavra alemã do dia; --zufall sorteia outra
+    subcommands: ['--zufall', '--random'],
+  },
+  quiz: {
+    name: 'quiz',
+    aliases: [],
+    categoria: 'diversao',
+  },
 };
 
 // Ordem das categorias no "ajuda" (os nomes ficam em ajuda.categoria.* no i18n)
-export const categorias = ['seguranca', 'dados', 'comunidade'];
+export const categorias = ['seguranca', 'dados', 'comunidade', 'idiomas', 'diversao'];

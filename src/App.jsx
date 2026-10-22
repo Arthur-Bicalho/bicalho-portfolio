@@ -59,6 +59,11 @@ const GaloStats = lazyCommand(() => import("./components/GaloStats"));
 // Comunidade: recado anônimo e indicações de música (com aprovação)
 const Recado = lazyCommand(() => import("./components/Recado"));
 const Indicar = lazyCommand(() => import("./components/Indicar"));
+// Idiomas e viagens: mapa, tradução, palavra alemã do dia e o quiz
+const Mapa = lazyCommand(() => import("./components/Mapa"));
+const Traduzir = lazyCommand(() => import("./components/Traduzir"));
+const Deutsch = lazyCommand(() => import("./components/Deutsch"));
+const Quiz = lazyCommand(() => import("./components/Quiz"));
 
 // Depois do boot, com o navegador ocioso, já baixa os comandos leves: o
 // primeiro uso de cada um abre na hora, sem "Carregando...". Ficam de fora os
@@ -89,6 +94,10 @@ const PRELOAD = [
   GaloStats,
   Recado,
   Indicar,
+  Mapa,
+  Traduzir,
+  Deutsch,
+  Quiz,
 ];
 
 const whenIdle = (fn) =>
@@ -212,6 +221,7 @@ function App() {
     lastLine?.type === Hack ||
     lastLine?.type === Cifra ||
     lastLine?.type === Recado ||
+    lastLine?.type === Quiz ||
     (lastLine?.type === Ctf && lastLine?.props?.modo === "enviar") ||
     (lastLine?.type === Indicar && lastLine?.props?.modo === "enviar");
 
@@ -226,7 +236,7 @@ function App() {
     // "recado <texto>", só o nome, para a flag e o recado não ficarem num
     // botão); os outros guardam a opção
     const palavras = input.trim().split(/\s+/);
-    const soONome = ["pergunta", "ctf", "recado"].includes(command.name);
+    const soONome = ["pergunta", "ctf", "recado", "traduzir"].includes(command.name);
     const resumo = soONome ? palavras[0] : palavras.slice(0, 2).join(" ");
     setRecentes((atual) =>
       [resumo, ...atual.filter((item) => item !== resumo)].slice(0, MAX_RECENTES),
@@ -528,6 +538,30 @@ function App() {
           response = <Indicar modo={modo} onExit={modo === "enviar" ? exitComponent : undefined} />;
           break;
         }
+        case "mapa":
+          // "mapa <país>" (ex.: "mapa alemanha", "map germany") já abre com o país
+          response = <Mapa busca={input.trim().replace(/^\S+\s*/, "")} />;
+          break;
+        case "traduzir": {
+          // "traduzir <texto>": o texto como foi digitado (os args estão em minúsculas)
+          const texto = input.trim().replace(/^\S+\s*/, "");
+          response = texto ? (
+            <Traduzir texto={texto} />
+          ) : (
+            <TerminalOutput>{t("traduzir.uso")}</TerminalOutput>
+          );
+          break;
+        }
+        case "deutsch":
+          if (subCommand && !command.subcommands.includes(subCommand)) {
+            response = <TerminalOutput>{t("deutsch.uso")}</TerminalOutput>;
+            break;
+          }
+          response = <Deutsch zufall={Boolean(subCommand)} />;
+          break;
+        case "quiz":
+          response = <Quiz onExit={exitComponent} />;
+          break;
         default:
           break;
       }

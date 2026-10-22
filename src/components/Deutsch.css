@@ -1,0 +1,94 @@
+/* Comando "deutsch": um cartão com a palavra em destaque e os dados em
+   pares rótulo/valor. Só tokens do theme.css. */
+.deutsch {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0 1.5rem 1rem;
+  min-width: 0;
+}
+
+.deutsch p {
+  margin: 0;
+}
+
+.deutsch-titulo {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 1.15em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hud-line);
+}
+
+.deutsch-cartao {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 70ch;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--hud-line);
+  background: var(--hud-panel);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+}
+
+/* Palavras alemãs compostas são longas: quebram em qualquer ponto */
+.deutsch-palavra {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+
+.deutsch-dados {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.deutsch-dados dt {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hud-dim);
+}
+
+.deutsch-dados dd {
+  margin: 0;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.deutsch-exemplo {
+  display: block;
+  font-style: italic;
+}
+
+.deutsch-traducao {
+  display: block;
+  color: var(--text-muted);
+}
+
+.deutsch-dica {
+  color: var(--text-dim);
+  font-size: 0.85em;
+}
+
+@media (max-width: 768px) {
+  .deutsch {
+    padding: 0 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .deutsch {
+    padding: 0 0 1rem;
+  }
+
+  .deutsch-palavra {
+    font-size: 1.25em;
+  }
+}

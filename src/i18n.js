@@ -811,10 +811,24 @@ const resources = {
         indicar: {
           desc: "Recommend a song or band; it shows up after I approve it (recommend --add).",
         },
+        mapa: {
+          desc: "World map in characters with the countries I've been to (map germany).",
+        },
+        traduzir: {
+          desc: "Translates a short text into Portuguese, English, German and Spanish with AI (translate hello).",
+        },
+        deutsch: {
+          desc: "An untranslatable German word of the day, the same for everyone (deutsch --zufall draws another).",
+        },
+        quiz: {
+          desc: "10 questions about me: how well do you know me?",
+        },
         categoria: {
           seguranca: "security",
           dados: "data",
           comunidade: "community",
+          idiomas: "languages & travel",
+          diversao: "fun",
         },
         dicas: {
           titulo: "Tips:",
@@ -829,6 +843,8 @@ const resources = {
       ctf: { uso: "Usage: ctf [--submit | --scoreboard] (or ctf <flag>)" },
       cifra: { uso: "Usage: cipher <text> [--decode]" },
       indicar: { uso: "Usage: recommend [--add | --list]" },
+      traduzir: { uso: "Usage: translate <text> (up to 100 characters)" },
+      deutsch: { uso: "Usage: deutsch [--zufall]" },
       lattes: {
         atualizado: "updated on {{data}}",
         pdf: {
@@ -1770,10 +1786,24 @@ const resources = {
         indicar: {
           desc: "Indique uma música ou banda; ela aparece depois que eu aprovar (indicar --enviar).",
         },
+        mapa: {
+          desc: "Mapa-múndi em caracteres com os países onde já estive (mapa alemanha).",
+        },
+        traduzir: {
+          desc: "Traduz um texto curto para português, inglês, alemão e espanhol com IA (traduzir olá).",
+        },
+        deutsch: {
+          desc: "Uma palavra alemã intraduzível por dia, igual para todo mundo (deutsch --zufall sorteia outra).",
+        },
+        quiz: {
+          desc: "10 perguntas sobre mim: o quanto você me conhece?",
+        },
         categoria: {
           seguranca: "segurança",
           dados: "dados",
           comunidade: "comunidade",
+          idiomas: "idiomas e viagens",
+          diversao: "diversão",
         },
         dicas: {
           titulo: "Dicas:",
@@ -1788,6 +1818,8 @@ const resources = {
       ctf: { uso: "Uso: ctf [--enviar | --placar] (ou ctf <flag>)" },
       cifra: { uso: "Uso: cifra <texto> [--decodificar]" },
       indicar: { uso: "Uso: indicar [--enviar | --lista]" },
+      traduzir: { uso: "Uso: traduzir <texto> (até 100 caracteres)" },
+      deutsch: { uso: "Uso: deutsch [--zufall]" },
       lattes: {
         atualizado: "atualizado em {{data}}",
         pdf: {
