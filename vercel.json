@@ -3,6 +3,9 @@
   "functions": {
     "api/ask.js": {
       "maxDuration": 60
+    },
+    "api/traduzir.js": {
+      "maxDuration": 30
     }
   },
   "rewrites": [

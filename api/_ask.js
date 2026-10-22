@@ -36,8 +36,8 @@ export { PROXY_PATH };
 
 // Endpoint compatível com a OpenAI e modelo padrão (troque com ASK_API_URL e
 // ASK_MODEL). O Flash-Lite é o mais rápido e o que tem mais cota grátis.
-const API_URL_PADRAO = "https://generativelanguage.googleapis.com/v1beta/openai";
-const MODELO_PADRAO = "gemini-3.5-flash-lite";
+export const API_URL_PADRAO = "https://generativelanguage.googleapis.com/v1beta/openai";
+export const MODELO_PADRAO = "gemini-3.5-flash-lite";
 
 // Quanto o modelo "pensa" antes de responder: pouco, que a resposta é curta e
 // está toda na base. Se o modelo não aceitar o parâmetro, vai sem ele.
@@ -51,7 +51,8 @@ const TIMEOUT_MS = 30_000;
 const MAX_CORPO = 32 * 1024;
 const FUSO_HORARIO = "America/Sao_Paulo";
 
-// Limite por visitante (IP)
+// Limite por visitante (IP). Vale somando o "pergunta" e o "traduzir"
+// (api/_traduzir.js usa esta mesma contagem): os dois gastam a mesma chave.
 const LIMITES = [
   { janelaMs: 60 * 1000, max: 6 }, // 6 perguntas por minuto
   { janelaMs: 24 * 60 * 60 * 1000, max: 60 }, // 60 por dia
@@ -83,7 +84,7 @@ function responderErro(res, status, erro, extra = {}) {
 
 const pedidos = new Map(); // ip → [timestamps]
 
-const ipDe = (req) =>
+export const ipDe = (req) =>
   String(req.headers["x-forwarded-for"] ?? "")
     .split(",")[0]
     .trim() ||
@@ -92,7 +93,7 @@ const ipDe = (req) =>
   "desconhecido";
 
 // Registra o pedido e devolve quantos segundos esperar (0 = pode seguir)
-function esperaDoVisitante(ip, agora = Date.now()) {
+export function esperaDoVisitante(ip, agora = Date.now()) {
   const maiorJanela = Math.max(...LIMITES.map((l) => l.janelaMs));
   const recentes = (pedidos.get(ip) ?? []).filter((t) => agora - t < maiorJanela);
 
@@ -120,7 +121,7 @@ function esperaDoVisitante(ip, agora = Date.now()) {
    Pedido do navegador
    ===================================================================== */
 
-class ErroDoPedido extends Error {
+export class ErroDoPedido extends Error {
   constructor(status, erro) {
     super(erro);
     this.status = status;
@@ -130,7 +131,7 @@ class ErroDoPedido extends Error {
 
 // Só o próprio site: o fetch do navegador manda Origin num POST. Sem Origin
 // (curl, por exemplo) passa, e o limite por IP segura.
-function origemPermitida(req) {
+export function origemPermitida(req) {
   const origem = req.headers.origin;
   if (!origem) return true;
   const host = String(req.headers["x-forwarded-host"] ?? req.headers.host ?? "").split(",")[0].trim();
@@ -141,7 +142,7 @@ function origemPermitida(req) {
   }
 }
 
-async function lerCorpo(req) {
+export async function lerCorpo(req) {
   // Na Vercel o corpo já vem lido em req.body; no Vite, lê do stream
   if (req.body !== undefined && req.body !== null) {
     if (typeof req.body === "string" || Buffer.isBuffer(req.body)) return JSON.parse(String(req.body));

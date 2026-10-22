@@ -1,0 +1,82 @@
+/* Comando "traduzir": o original entre aspas e as quatro traduções com a
+   borda amarela das entradas do guestbook. Só tokens do theme.css. */
+.traduzir {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0 1.5rem 1rem;
+  min-width: 0;
+}
+
+.traduzir p {
+  margin: 0;
+}
+
+.traduzir-titulo {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 1.15em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hud-line);
+}
+
+/* Texto do visitante: quebra em qualquer ponto, nunca estoura */
+.traduzir-original,
+.traduzir-lista dd {
+  overflow-wrap: anywhere;
+}
+
+.traduzir-original {
+  color: var(--text-muted);
+}
+
+.traduzir-lista {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--accent);
+}
+
+.traduzir-item {
+  min-width: 0;
+}
+
+.traduzir-sigla {
+  color: var(--hud-red);
+  font-weight: 700;
+}
+
+.traduzir-idioma {
+  color: var(--hud-dim);
+  font-size: 0.85em;
+}
+
+.traduzir-lista dd {
+  margin: 0;
+  color: var(--text);
+}
+
+.traduzir-erro {
+  color: var(--hud-red);
+  font-weight: 600;
+}
+
+.traduzir-nota {
+  color: var(--text-dim);
+  font-size: 0.85em;
+}
+
+@media (max-width: 768px) {
+  .traduzir {
+    padding: 0 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .traduzir {
+    padding: 0 0 1rem;
+  }
+}

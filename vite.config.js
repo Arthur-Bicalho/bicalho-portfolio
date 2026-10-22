@@ -5,6 +5,7 @@ import GITHUB_STATS_CONFIG from './src/config/gitHubStatsConfig.js'
 import { atenderGitHub, PROXY_PATH } from './api/_github.js'
 import { atenderAsk, PROXY_PATH as ASK_PATH } from './api/_ask.js'
 import { atenderClima, PROXY_PATH as CLIMA_PATH } from './api/_clima.js'
+import { atenderTraduzir, PROXY_PATH as TRADUZIR_PATH } from './api/_traduzir.js'
 
 // Comando "stats": os badges de visitas (komarev e views-counter) também não
 // liberam CORS. Em produção quem repassa são os rewrites do vercel.json.
@@ -56,6 +57,25 @@ function askIA(env) {
   }
   return {
     name: 'ask-ia',
+    configureServer: (server) => {
+      server.middlewares.use(middleware)
+    },
+    configurePreviewServer: (server) => {
+      server.middlewares.use(middleware)
+    },
+  }
+}
+
+// Comando "traduzir": POST /api/traduzir manda o texto para a IA (a mesma
+// chave do "ask"). Em produção quem faz isso é a Vercel Function
+// api/traduzir.js; aqui, no npm run dev e no npm run preview, é este middleware.
+function traduzir(env) {
+  const middleware = (req, res, next) => {
+    if (new URL(req.url, 'http://localhost').pathname !== TRADUZIR_PATH) return next()
+    atenderTraduzir(req, res, env).catch(next)
+  }
+  return {
+    name: 'traduzir',
     configureServer: (server) => {
       server.middlewares.use(middleware)
     },
@@ -126,6 +146,7 @@ export default defineConfig(({ mode }) => {
       react(),
       githubSiteToken(env.GITHUB_SITE_TOKEN),
       askIA(env),
+      traduzir(env),
       clima(env),
       cabecalhosDaVercel(),
     ],

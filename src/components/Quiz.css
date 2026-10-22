@@ -1,0 +1,161 @@
+/* Comando "quiz": opções numeradas como botões neutros do HUD (bevel retrô),
+   certa em verde e errada em vermelho depois de responder. Só tokens. */
+.quiz {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0 1.5rem 1rem;
+  min-width: 0;
+}
+
+.quiz p {
+  margin: 0;
+}
+
+.quiz-titulo {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 1.15em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hud-line);
+}
+
+.quiz-progresso {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hud-dim);
+}
+
+.quiz-pergunta {
+  color: var(--text);
+  font-weight: 600;
+  max-width: 70ch;
+}
+
+.quiz-opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 40rem;
+  outline: none;
+}
+
+.quiz-opcao {
+  min-height: 44px;
+  padding: 8px 12px;
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+  background: var(--hud-button);
+  border: 2px solid;
+  border-color: var(--hud-bevel-hi-2) var(--hud-bevel-lo-2) var(--hud-bevel-lo-2) var(--hud-bevel-hi-2);
+  cursor: pointer;
+  overflow-wrap: anywhere;
+  touch-action: manipulation;
+}
+
+.quiz-opcao[aria-disabled="true"] {
+  cursor: default;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .quiz-opcao:not([aria-disabled="true"]):hover {
+    color: var(--hud-line);
+  }
+}
+
+.quiz-opcao:focus-visible {
+  outline: 2px solid var(--hud-cyan);
+  outline-offset: 1px;
+}
+
+.quiz-numero {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.quiz-opcao-certa {
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.quiz-opcao-errada {
+  border-color: var(--hud-red);
+  color: var(--hud-red);
+}
+
+.quiz-retorno {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.quiz-retorno .btn-voltar-terminal {
+  margin-top: 0;
+}
+
+.quiz-certo {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.quiz-errado {
+  color: var(--hud-red);
+  font-weight: 600;
+}
+
+.quiz-dim {
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
+.quiz-teclado {
+  font-size: 0.85em;
+}
+
+.quiz-fim {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.quiz-resultado {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 1.15em;
+}
+
+.quiz-comandos {
+  color: var(--accent);
+}
+
+.quiz-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.quiz-botoes .btn-voltar-terminal {
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .quiz {
+    padding: 0 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .quiz {
+    padding: 0 0 1rem;
+  }
+
+  .quiz-teclado {
+    display: none;
+  }
+}

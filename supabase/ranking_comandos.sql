@@ -55,7 +55,8 @@ declare
     'neofetch', 'campeonato', 'basquete', 'jogo', 'guestbook', 'design',
     'hack', 'ctf', 'cifra', 'whoami',
     'ranking', 'agora',
-    'recado', 'indicar'
+    'recado', 'indicar',
+    'mapa', 'traduzir', 'deutsch', 'quiz'
   ];
   agora_min timestamptz := date_trunc('minute', now());
   no_minuto int;
