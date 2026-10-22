@@ -94,7 +94,8 @@ export const commandList = {
     // --todos | --all mostram todos os jogos já marcados;
     // --tabela | --table mostram a classificação do Brasileirão;
     // --stats mostra o aproveitamento da temporada (ver components/GaloStats.jsx)
-    subcommands: ['--todos', '--all', '--tabela', '--table', '--stats'],
+    // grita | roar tocam a fanfarra do Galo (ver components/GaloGrita.jsx)
+    subcommands: ['--todos', '--all', '--tabela', '--table', '--stats', 'grita', 'roar'],
   },
   basquete: {
     name: 'basquete',
@@ -201,6 +202,24 @@ export const commandList = {
     name: 'quiz',
     aliases: [],
     categoria: 'diversao',
+  },
+  digitar: {
+    name: 'digitar',
+    aliases: ['type'],
+    categoria: 'diversao',
+  },
+  rm: {
+    name: 'rm',
+    // "sudo rm -rf /" também vale (ver components/RmRf.jsx)
+    aliases: ['sudo'],
+    categoria: 'diversao',
+    subcommands: ['-rf', 'rm'],
+  },
+  compartilhar: {
+    name: 'compartilhar',
+    aliases: ['share'],
+    categoria: 'diversao',
+    // compartilhar <comando>: copia o link ?cmd=<comando>&lang=...
   },
 };
 

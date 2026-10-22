@@ -294,6 +294,22 @@
   animation: hud-acesso 0.2s cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 
+/* Glitch do "rm -rf /": o HUD treme e pisca de leve por 1,6 s (só
+   transform e opacity, em passos). Sem nada com reduced motion. */
+.hud-glitch .hud-cabecalho,
+.hud-glitch .hud-lateral,
+.hud-glitch .hud-taskbar {
+  animation: hud-glitch 0.4s steps(1) 4;
+}
+
+@keyframes hud-glitch {
+  0% { transform: translateX(0); opacity: 1; }
+  20% { transform: translateX(-3px); opacity: 0.75; }
+  40% { transform: translateX(2px); opacity: 1; }
+  60% { transform: translateX(0) skewX(-2deg); opacity: 0.85; }
+  80% { transform: translateX(-1px); opacity: 1; }
+}
+
 @keyframes hud-acesso-fade {
   from {
     opacity: 0;
@@ -549,8 +565,20 @@
   flex-shrink: 0;
 }
 
+.hud-recentes li {
+  display: flex;
+  gap: 2px;
+}
+
 .hud-recentes .hud-aba {
   width: 150px;
+}
+
+/* "Copiar link" ao lado de cada comando recente */
+.hud-recentes .hud-aba-link {
+  width: 30px;
+  padding: 0;
+  justify-content: center;
 }
 
 .hud-ticker {
@@ -705,6 +733,12 @@
   .hud-fundo-scan,
   .hud-breach-ativa,
   .hud-ticker-faixa {
+    animation: none;
+  }
+
+  .hud-glitch .hud-cabecalho,
+  .hud-glitch .hud-lateral,
+  .hud-glitch .hud-taskbar {
     animation: none;
   }
 

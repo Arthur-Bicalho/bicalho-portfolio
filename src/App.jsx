@@ -64,6 +64,11 @@ const Mapa = lazyCommand(() => import("./components/Mapa"));
 const Traduzir = lazyCommand(() => import("./components/Traduzir"));
 const Deutsch = lazyCommand(() => import("./components/Deutsch"));
 const Quiz = lazyCommand(() => import("./components/Quiz"));
+// Diversão e utilidades: digitação, fanfarra do Galo, rm -rf / e compartilhar
+const Digitar = lazyCommand(() => import("./components/Digitar"));
+const GaloGrita = lazyCommand(() => import("./components/GaloGrita"));
+const RmRf = lazyCommand(() => import("./components/RmRf"));
+const Compartilhar = lazyCommand(() => import("./components/Compartilhar"));
 
 // Depois do boot, com o navegador ocioso, já baixa os comandos leves: o
 // primeiro uso de cada um abre na hora, sem "Carregando...". Ficam de fora os
@@ -98,6 +103,10 @@ const PRELOAD = [
   Traduzir,
   Deutsch,
   Quiz,
+  Digitar,
+  GaloGrita,
+  RmRf,
+  Compartilhar,
 ];
 
 const whenIdle = (fn) =>
@@ -222,6 +231,7 @@ function App() {
     lastLine?.type === Cifra ||
     lastLine?.type === Recado ||
     lastLine?.type === Quiz ||
+    lastLine?.type === Digitar ||
     (lastLine?.type === Ctf && lastLine?.props?.modo === "enviar") ||
     (lastLine?.type === Indicar && lastLine?.props?.modo === "enviar");
 
@@ -411,6 +421,11 @@ function App() {
             response = <TerminalOutput>{t("jogos.uso")}</TerminalOutput>;
             break;
           }
+          if (subCommand === "grita" || subCommand === "roar") {
+            // Fanfarra chiptune original (components/GaloGrita.jsx)
+            response = <GaloGrita />;
+            break;
+          }
           if (subCommand === "--stats") {
             // Aproveitamento da temporada (components/GaloStats.jsx)
             response = <GaloStats />;
@@ -562,6 +577,41 @@ function App() {
         case "quiz":
           response = <Quiz onExit={exitComponent} />;
           break;
+        case "digitar":
+          response = <Digitar onExit={exitComponent} />;
+          break;
+        case "rm": {
+          // "rm -rf /" e "sudo rm -rf /" (também -fr e /*) viram a brincadeira;
+          // outro "rm" é negado e outro "sudo" não está no sudoers
+          const palavras = input.trim().split(/\s+/);
+          const sudo = palavras[0].toLowerCase() === "sudo";
+          const resto = sudo ? palavras.slice(1) : palavras;
+          const ehRm = resto[0]?.toLowerCase() === "rm";
+          const rmrf =
+            ehRm &&
+            resto.slice(1).some((p) => /^-(rf|fr)$/i.test(p)) &&
+            resto.slice(1).some((p) => p === "/" || p === "/*");
+          if (rmrf) response = <RmRf modo="rmrf" />;
+          else if (sudo && !ehRm) response = <RmRf modo="sudoers" />;
+          else if (resto.length <= 1) response = <RmRf modo={sudo ? "sudoers" : "operando"} />;
+          else response = <RmRf modo="negado" alvo={resto.at(-1)} />;
+          break;
+        }
+        case "compartilhar": {
+          // "compartilhar <comando>": só comandos que existem (o resto do
+          // texto vai junto, como no ?cmd=, até 60 caracteres)
+          const alvo = input.trim().replace(/^\S+\s*/, "").slice(0, 60);
+          const primeira = alvo.split(/\s+/)[0]?.toLowerCase();
+          const existe =
+            !alvo ||
+            Object.values(commandList).some((c) => c.name === primeira || c.aliases.includes(primeira));
+          response = existe ? (
+            <Compartilhar comando={alvo} />
+          ) : (
+            <TerminalOutput>{t("compartilhar.uso")}</TerminalOutput>
+          );
+          break;
+        }
         default:
           break;
       }

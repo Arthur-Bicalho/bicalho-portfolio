@@ -25,7 +25,7 @@ Estudante de Ciência da Computação na PUC Minas e membro da
 | `spotify` | O que estou ouvindo |
 | `guestbook` | Livro de visitas (Supabase) |
 | `neofetch` | Informações do "sistema" |
-| `campeonato` / `galo` | Próximos jogos do Atlético Mineiro |
+| `campeonato` / `galo` | Próximos jogos do Atlético Mineiro (`--todos`, `--tabela`, `--stats`, `grita`) |
 | `basquete` / `nba` | Próximos jogos da NBA |
 | `jogo` / `quake` / `flappyplane` | Quake (shareware) e Flappy Plane |
 | `tema` | Tema escuro, claro ou Galo |
@@ -58,6 +58,24 @@ O `ajuda` mostra a tabela acima e, embaixo, uma linha por categoria com os coman
 | --- | --- |
 | `recado` / `note` | Recado anônimo que só eu leio (`recado <texto>` já abre com o texto) |
 | `indicar` / `recommend` | Indicações de música aprovadas; `indicar --enviar` manda uma (fica pendente até eu aprovar) |
+
+**Idiomas e viagens**
+
+| Comando | O que faz |
+| --- | --- |
+| `mapa` / `map` | Mapa-múndi em caracteres com os países que visitei (`mapa alemanha` já abre no país) |
+| `traduzir` / `translate` | `traduzir <texto>` (até 100 caracteres) em português, inglês, alemão e espanhol, pela IA do servidor |
+| `deutsch` | Palavra alemã "intraduzível" do dia, igual para todos (`--zufall` sorteia outra) |
+
+**Diversão**
+
+| Comando | O que faz |
+| --- | --- |
+| `quiz` | 10 perguntas sobre mim, sorteadas de um banco de 20 |
+| `digitar` / `type` | Teste de digitação com comandos de Linux e trechos de código (PPM, precisão, placar local) |
+| `galo grita` / `galo roar` | Fanfarra chiptune original de ~10 s (Web Audio), com o escudo piscando |
+| `rm -rf /` / `sudo rm -rf /` | Experimente. (Nada é apagado.) |
+| `compartilhar` / `share` | `compartilhar <comando>` copia o link `?cmd=...&lang=...`; os recentes da taskbar também têm um botão de copiar link |
 
 O `ranking` conta cada comando no máximo uma vez por visita e envia só o nome dele, sem IP nem
 identificação. O banco aceita só os nomes da lista em `registrar_comando` e limita a frequência.
@@ -133,7 +151,8 @@ Contas e chaves (vão nas variáveis de ambiente da Vercel; veja o `.env.example
   `select id, artista, musica, nome from public.indicacoes where not aprovado order by created_at;`
   e depois `update public.indicacoes set aprovado = true where id = '<id>';`.
   Para recusar, apague a linha (`delete from public.indicacoes where id = '<id>';`).
-- **Gemini** (`GEMINI_API_KEY`) para o `pergunta`. Depois de qualquer mudança no conteúdo, rode `npm run ask` para atualizar `api/_askPerfil.js`.
+- **Gemini** (`GEMINI_API_KEY`) para o `pergunta` e o `traduzir` (os dois dividem o limite por
+  visitante: 6 pedidos por minuto e 60 por dia). Depois de qualquer mudança no conteúdo, rode `npm run ask` para atualizar `api/_askPerfil.js`.
 - Opcionais: `GITHUB_SITE_TOKEN` (stats mais completos) e reCAPTCHA no contato.
 
 ### CTF (comando `ctf`)
@@ -158,6 +177,10 @@ Conteúdo:
 - **Spotify**: os cards usam serviços que pedem para você entrar com o Spotify uma vez:
   [spotify-github-profile](https://spotify-github-profile.kittinanx.com/api/login) e
   [spotify-recently-played](https://spotify-recently-played.jeffreyca.workers.dev). Sem login, eles ficam escondidos e aparece só o link do seu perfil. Uma música para o player vai em `TRACK_ID` (`src/config/spotifyConfig.js`).
+- **Mapa**: `src/data/paisesData.js` (posição e texto de cada país; os marcados como "provisório"
+  têm um texto genérico) e `src/data/mapaAscii.js` (o desenho).
+- **Quiz, deutsch e digitar**: `src/data/quizData.js`, `src/data/deutschData.js` e
+  `src/data/digitarData.js`.
 - **Agora**: `src/data/agoraData.js` (texto em pt e en de cada item e o mês da última atualização).
 - **Projetos**: `src/data/projectsData.js` + títulos e descrições em `projetos.*` no i18n.
 - **Currículo em inglês** (opcional): salve `public/cv-en.pdf` e marque `en: true` em `CURRICULOS` (`src/components/Curriculo.jsx`).

@@ -140,7 +140,7 @@ const resources = {
         carregando: "Fetching Galo's fixtures...",
         erro: "Couldn't fetch the matches right now. Try again in a moment.",
         nenhum: "No matches scheduled yet.",
-        uso: "Usage: campeonato [--all | --table | --stats] (championship | galo | atletico also work)",
+        uso: "Usage: campeonato [--all | --table | --stats | roar] (championship | galo | atletico also work)",
         proximo_em: "Next match {{tempo}}",
         relogio_alt: "Countdown to the next match",
         placar_alt: "Live score",
@@ -534,6 +534,7 @@ const resources = {
         iniciar_dica: "Show all commands (help)",
         recentes: "Recent commands",
         repetir: "Run again: {{cmd}}",
+        copiar_link: "Copy the link to \"{{cmd}}\"",
         loader_detalhe: "downloading module · buffer 0x3F",
         ticker: {
           musica: "Metalhead · bossa nova · funk · thrash metal",
@@ -764,7 +765,7 @@ const resources = {
           desc: "Shows system info with the Galo crest, neofetch style.",
         },
         campeonato: {
-          desc: "Galo's upcoming matches: countdown and competition (galo --all | --table | --stats).",
+          desc: "Galo's upcoming matches: countdown and competition (galo --all | --table | --stats | roar).",
         },
         basquete: {
           desc: "NBA upcoming games: countdown, team logos and TV (nba lal | nba --all).",
@@ -823,6 +824,15 @@ const resources = {
         quiz: {
           desc: "10 questions about me: how well do you know me?",
         },
+        digitar: {
+          desc: "Typing test with Linux commands and code snippets: WPM, accuracy and errors live.",
+        },
+        rm: {
+          desc: "Go ahead, try rm -rf / (or sudo rm -rf /). What could go wrong?",
+        },
+        compartilhar: {
+          desc: "Copies a direct link to a command (share galo --stats).",
+        },
         categoria: {
           seguranca: "security",
           dados: "data",
@@ -845,6 +855,7 @@ const resources = {
       indicar: { uso: "Usage: recommend [--add | --list]" },
       traduzir: { uso: "Usage: translate <text> (up to 100 characters)" },
       deutsch: { uso: "Usage: deutsch [--zufall]" },
+      compartilhar: { uso: "Usage: share [command] (e.g. share galo --stats)" },
       lattes: {
         atualizado: "updated on {{data}}",
         pdf: {
@@ -1113,7 +1124,7 @@ const resources = {
         carregando: "Buscando os jogos do Galo...",
         erro: "Não consegui buscar os jogos agora. Tente de novo daqui a pouco.",
         nenhum: "Nenhum jogo marcado por enquanto.",
-        uso: "Uso: campeonato [--todos | --tabela | --stats] (championship | galo | atletico também funcionam)",
+        uso: "Uso: campeonato [--todos | --tabela | --stats | grita] (championship | galo | atletico também funcionam)",
         proximo_em: "Próximo jogo {{tempo}}",
         relogio_alt: "Contagem regressiva para o próximo jogo",
         placar_alt: "Placar ao vivo",
@@ -1507,6 +1518,7 @@ const resources = {
         iniciar_dica: "Ver todos os comandos (ajuda)",
         recentes: "Comandos recentes",
         repetir: "Rodar de novo: {{cmd}}",
+        copiar_link: "Copiar o link de \"{{cmd}}\"",
         loader_detalhe: "baixando módulo · buffer 0x3F",
         ticker: {
           musica: "Metalhead · bossa nova · funk · thrash metal",
@@ -1739,7 +1751,7 @@ const resources = {
           desc: "Mostra as informações do sistema com o escudo do Galo, no estilo neofetch.",
         },
         campeonato: {
-          desc: "Próximos jogos do Galo: contagem regressiva e campeonato (galo --todos | --tabela | --stats).",
+          desc: "Próximos jogos do Galo: contagem regressiva e campeonato (galo --todos | --tabela | --stats | grita).",
         },
         basquete: {
           desc: "Próximos jogos da NBA: contagem regressiva, logos dos times e TV (nba lal | nba --todos).",
@@ -1798,6 +1810,15 @@ const resources = {
         quiz: {
           desc: "10 perguntas sobre mim: o quanto você me conhece?",
         },
+        digitar: {
+          desc: "Teste de digitação com comandos de Linux e trechos de código: PPM, precisão e erros ao vivo.",
+        },
+        rm: {
+          desc: "Vai, tenta um rm -rf / (ou sudo rm -rf /). O que pode dar errado?",
+        },
+        compartilhar: {
+          desc: "Copia o link direto de um comando (compartilhar galo --stats).",
+        },
         categoria: {
           seguranca: "segurança",
           dados: "dados",
@@ -1820,6 +1841,7 @@ const resources = {
       indicar: { uso: "Uso: indicar [--enviar | --lista]" },
       traduzir: { uso: "Uso: traduzir <texto> (até 100 caracteres)" },
       deutsch: { uso: "Uso: deutsch [--zufall]" },
+      compartilhar: { uso: "Uso: compartilhar [comando] (ex.: compartilhar galo --stats)" },
       lattes: {
         atualizado: "atualizado em {{data}}",
         pdf: {
