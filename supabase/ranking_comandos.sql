@@ -54,7 +54,8 @@ declare
     'habilidades', 'tema', 'projetos', 'github', 'spotify', 'stats',
     'neofetch', 'campeonato', 'basquete', 'jogo', 'guestbook', 'design',
     'hack', 'ctf', 'cifra', 'whoami',
-    'ranking', 'agora'
+    'ranking', 'agora',
+    'recado', 'indicar'
   ];
   agora_min timestamptz := date_trunc('minute', now());
   no_minuto int;

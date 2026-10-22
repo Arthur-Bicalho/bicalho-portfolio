@@ -1,0 +1,64 @@
+/* Comando "recado": campo em estilo CLI (Cli.css) e a confirmação com as
+   classes da janela "System message" (hud/RetroLoader.css). Só tokens. */
+.recado {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0 1.5rem 1rem;
+  min-width: 0;
+}
+
+.recado p {
+  margin: 0;
+}
+
+.recado-titulo {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 1.15em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hud-line);
+}
+
+.recado-intro {
+  color: var(--text-muted);
+  max-width: 62ch;
+}
+
+.recado .recado-input {
+  flex: 1;
+  width: auto;
+}
+
+.recado-erro {
+  color: var(--hud-red);
+  font-weight: 600;
+}
+
+/* Na confirmação, o ícone é um "ok" em vez do "!" vermelho */
+.recado-confirmacao .recado-icone {
+  background: var(--success);
+}
+
+.recado-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.recado-botoes .btn-voltar-terminal {
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .recado {
+    padding: 0 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .recado {
+    padding: 0 0 1rem;
+  }
+}

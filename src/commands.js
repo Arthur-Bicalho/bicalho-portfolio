@@ -160,7 +160,20 @@ export const commandList = {
     aliases: ['now'],
     categoria: 'dados',
   },
+  recado: {
+    name: 'recado',
+    aliases: ['note'],
+    categoria: 'comunidade',
+    // recado <texto>: abre o envio já com o texto (ver components/Recado.jsx)
+  },
+  indicar: {
+    name: 'indicar',
+    aliases: ['recommend'],
+    categoria: 'comunidade',
+    // "indicar" mostra as indicações aprovadas; --enviar | --add abre o envio
+    subcommands: ['--enviar', '--add', '--lista', '--list'],
+  },
 };
 
 // Ordem das categorias no "ajuda" (os nomes ficam em ajuda.categoria.* no i18n)
-export const categorias = ['seguranca', 'dados'];
+export const categorias = ['seguranca', 'dados', 'comunidade'];

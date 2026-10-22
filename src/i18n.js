@@ -805,9 +805,16 @@ const resources = {
         agora: {
           desc: "What I'm studying and building right now, and my latest public push on GitHub.",
         },
+        recado: {
+          desc: "Leave me an anonymous note that only I can read (note <text>).",
+        },
+        indicar: {
+          desc: "Recommend a song or band; it shows up after I approve it (recommend --add).",
+        },
         categoria: {
           seguranca: "security",
           dados: "data",
+          comunidade: "community",
         },
         dicas: {
           titulo: "Tips:",
@@ -821,6 +828,7 @@ const resources = {
       hack: { uso: "Usage: hack [--easy | --hard]" },
       ctf: { uso: "Usage: ctf [--submit | --scoreboard] (or ctf <flag>)" },
       cifra: { uso: "Usage: cipher <text> [--decode]" },
+      indicar: { uso: "Usage: recommend [--add | --list]" },
       lattes: {
         atualizado: "updated on {{data}}",
         pdf: {
@@ -1756,9 +1764,16 @@ const resources = {
         agora: {
           desc: "O que estou estudando e construindo agora, e o meu último push público no GitHub.",
         },
+        recado: {
+          desc: "Deixe um recado anônimo que só eu leio (recado <texto>).",
+        },
+        indicar: {
+          desc: "Indique uma música ou banda; ela aparece depois que eu aprovar (indicar --enviar).",
+        },
         categoria: {
           seguranca: "segurança",
           dados: "dados",
+          comunidade: "comunidade",
         },
         dicas: {
           titulo: "Dicas:",
@@ -1772,6 +1787,7 @@ const resources = {
       hack: { uso: "Uso: hack [--facil | --dificil]" },
       ctf: { uso: "Uso: ctf [--enviar | --placar] (ou ctf <flag>)" },
       cifra: { uso: "Uso: cifra <texto> [--decodificar]" },
+      indicar: { uso: "Uso: indicar [--enviar | --lista]" },
       lattes: {
         atualizado: "atualizado em {{data}}",
         pdf: {
