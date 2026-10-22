@@ -1,0 +1,42 @@
+/* Comando "compartilhar": a janela "System message" (hud/RetroLoader.css) e
+   o link por extenso, que quebra em qualquer ponto. Só tokens. */
+.compartilhar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0 1.5rem 1rem;
+  min-width: 0;
+}
+
+.compartilhar p {
+  margin: 0;
+}
+
+.compartilhar-janela .compartilhar-ok {
+  background: var(--success);
+}
+
+.compartilhar-link {
+  overflow-wrap: anywhere;
+  color: var(--text);
+}
+
+.compartilhar-rotulo {
+  color: var(--hud-dim);
+}
+
+.compartilhar .btn-voltar-terminal {
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .compartilhar {
+    padding: 0 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .compartilhar {
+    padding: 0 0 1rem;
+  }
+}

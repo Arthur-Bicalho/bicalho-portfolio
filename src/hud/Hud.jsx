@@ -4,6 +4,7 @@ import LanguageSwitcher from "../components/LanguageSwitcher";
 import { skillsMeta } from "../data/skillsMeta";
 import { AVATAR, GITHUB_URL, NASCIMENTO, continentes } from "../data/sobreData";
 import { EVENTO_HUD } from "./eventos";
+import { linkDoComando, copiarTexto } from "../lib/compartilhar";
 import "./Hud.css";
 
 // HUD "netrunner" em volta do terminal: cabeçalho, painel do perfil à
@@ -250,6 +251,7 @@ const CORES_RECENTES = ["hud-ciano", "hud-vermelho", "hud-amarelo"];
 function Taskbar({ onCommand, onFocusTerminal, recent, paused, onLanguageChange }) {
   const { t, i18n } = useTranslation();
   const ajuda = i18n.language.startsWith("en") ? "help" : "ajuda";
+  const [copiado, setCopiado] = useState(null);
   return (
     <footer className="hud-taskbar">
       <button
@@ -280,6 +282,21 @@ function Taskbar({ onCommand, onFocusTerminal, recent, paused, onLanguageChange 
                 <span aria-hidden="true" className={`hud-aba-ponto ${CORES_RECENTES[i % 3]}`} />
                 <span className="hud-aba-texto">{comando}</span>
               </button>
+              {/* Copia o link ?cmd=... deste comando (lib/compartilhar.js) */}
+              <button
+                type="button"
+                className="hud-aba hud-aba-link"
+                title={t("hud.copiar_link", { cmd: comando })}
+                aria-label={t("hud.copiar_link", { cmd: comando })}
+                onClick={async () => {
+                  if (await copiarTexto(linkDoComando(comando, i18n.language))) {
+                    setCopiado(comando);
+                    setTimeout(() => setCopiado((c) => (c === comando ? null : c)), 2000);
+                  }
+                }}
+              >
+                <span aria-hidden="true">{copiado === comando ? "✓" : "⧉"}</span>
+              </button>
             </li>
           ))}
         </ul>
@@ -294,9 +311,27 @@ function Taskbar({ onCommand, onFocusTerminal, recent, paused, onLanguageChange 
   );
 }
 
+// Quanto dura o glitch do "rm -rf /" (hud/eventos.js)
+const GLITCH_MS = 1600;
+
 export default function Hud({ children, onCommand, onFocusTerminal, recent, paused, onLanguageChange }) {
+  const [glitch, setGlitch] = useState(false);
+  useEffect(() => {
+    let timer;
+    const ouvir = (e) => {
+      if (e.detail?.tipo !== "glitch") return;
+      setGlitch(true);
+      clearTimeout(timer);
+      timer = setTimeout(() => setGlitch(false), GLITCH_MS);
+    };
+    window.addEventListener(EVENTO_HUD, ouvir);
+    return () => {
+      window.removeEventListener(EVENTO_HUD, ouvir);
+      clearTimeout(timer);
+    };
+  }, []);
   return (
-    <div className="hud">
+    <div className={glitch ? "hud hud-glitch" : "hud"}>
       <div className="hud-fundo" aria-hidden="true">
         <div className="hud-fundo-nome">BICALHO</div>
         <div className="hud-fundo-scan" />

@@ -56,7 +56,8 @@ declare
     'hack', 'ctf', 'cifra', 'whoami',
     'ranking', 'agora',
     'recado', 'indicar',
-    'mapa', 'traduzir', 'deutsch', 'quiz'
+    'mapa', 'traduzir', 'deutsch', 'quiz',
+    'digitar', 'rm', 'compartilhar'
   ];
   agora_min timestamptz := date_trunc('minute', now());
   no_minuto int;

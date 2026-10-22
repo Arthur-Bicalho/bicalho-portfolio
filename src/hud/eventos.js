@@ -3,6 +3,7 @@
 // já está na tela, escuta. Assim o bundle inicial quase não cresce.
 //
 //   avisarHud("breach")  → o painel BREACH PROTOCOL mostra "ACCESS GRANTED"
+//   avisarHud("glitch")  → o HUD treme por 1,6 s (o "rm -rf /")
 
 export const EVENTO_HUD = "hud:evento";
 
