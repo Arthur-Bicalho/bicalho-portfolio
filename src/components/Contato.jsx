@@ -21,14 +21,37 @@ import { useTheme } from "../theme/themeContext";
 // (headless), o jeito mais comum de robôs dispararem formulários
 // Sem as variáveis do EmailJS (ex.: antes de configurar na Vercel), o
 // formulário não aparece: o visitante vê o e-mail para escrever direto
+// O template de confirmação só é exigido com VITE_EMAILJS_CONFIRMACAO=true
 const EMAILJS_PRONTO = Boolean(
   EMAILJS_CONFIG.SERVICE_ID &&
   EMAILJS_CONFIG.TEMPLATE_ID_FOR_ME &&
-  EMAILJS_CONFIG.TEMPLATE_ID_FOR_SENDER &&
+  (!EMAILJS_CONFIG.CONFIRMACAO || EMAILJS_CONFIG.TEMPLATE_ID_FOR_SENDER) &&
   EMAILJS_CONFIG.PUBLIC_KEY,
 );
 
 const EMAILJS_OPTIONS = { publicKey: EMAILJS_CONFIG.PUBLIC_KEY, blockHeadless: true };
+
+// Um envio a cada 60 s por navegador. É só cortesia (quem quiser abusar
+// limpa o storage): a proteção de verdade é o reCAPTCHA conferido no EmailJS.
+const INTERVALO_ENVIO_MS = 60 * 1000;
+const CHAVE_ULTIMO_ENVIO = "portfolio:contatoUltimoEnvio";
+
+function segundosParaEnviar() {
+  try {
+    const ultimo = Number(localStorage.getItem(CHAVE_ULTIMO_ENVIO)) || 0;
+    return Math.max(0, Math.ceil((ultimo + INTERVALO_ENVIO_MS - Date.now()) / 1000));
+  } catch {
+    return 0; // sem storage, não há como lembrar: deixa enviar
+  }
+}
+
+function marcarEnvio() {
+  try {
+    localStorage.setItem(CHAVE_ULTIMO_ENVIO, String(Date.now()));
+  } catch {
+    // sem storage, o limite não vale
+  }
+}
 
 // Limites dos campos (o EmailJS aceita até 50 kB por envio no plano gratuito)
 const MAX_NOME = 100;
@@ -46,6 +69,8 @@ const Contato = ({ onExit }) => {
   // Chave do i18n da mensagem de status ("" mostra o subtítulo). Guardar a
   // chave, e não o texto, faz a mensagem acompanhar a troca de idioma.
   const [status, setStatus] = useState("");
+  // Segundos que faltam para poder enviar de novo (mensagem "contato.aguarde")
+  const [espera, setEspera] = useState(0);
   const [sending, setSending] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
   const [captchaFailed, setCaptchaFailed] = useState(false);
@@ -99,6 +124,13 @@ const Contato = ({ onExit }) => {
       return;
     }
 
+    const faltam = segundosParaEnviar();
+    if (faltam > 0) {
+      setEspera(faltam);
+      setStatus("contato.aguarde");
+      return;
+    }
+
     // Cada token do reCAPTCHA vale para um envio só
     if (captchaEnabled && !captchaToken) {
       setStatus(captchaFailed ? "contato.captcha_indisponivel" : "contato.captcha_pendente");
@@ -113,27 +145,34 @@ const Contato = ({ onExit }) => {
     setSending(true);
     setStatus("contato.enviando");
 
-    try {
-      // 1) Confirmação para o remetente. É o envio que vai para um endereço
-      // digitado pelo visitante, então é ele que leva o token do reCAPTCHA: o
-      // EmailJS confere o token com o Google e recusa o envio se for inválido.
-      // Por isso ele vem primeiro: sem passar no reCAPTCHA, nada é enviado.
-      await emailjs.send(
-        EMAILJS_CONFIG.SERVICE_ID,
-        EMAILJS_CONFIG.TEMPLATE_ID_FOR_SENDER,
-        {
-          name: nome,
-          email: email,
-          message: mensagem,
-          title: "Recebemos sua mensagem!", // assunto do email de confirmação
-          time: time,
-          ...(captchaEnabled && { "g-recaptcha-response": captchaToken }),
-        },
-        EMAILJS_OPTIONS,
-      );
+    // O Google só aceita conferir cada token do reCAPTCHA uma vez: ele vai no
+    // primeiro envio, e o EmailJS recusa esse envio se o token for inválido.
+    // Por isso o primeiro envio é o que mais precisa de proteção.
+    const token = captchaEnabled && { "g-recaptcha-response": captchaToken };
 
-      // 2) Notificação para mim. Sem token: o Google só aceita conferir cada
-      // token uma vez, e este template também é usado pelo guestbook.
+    try {
+      // 1) Confirmação para o remetente (só com VITE_EMAILJS_CONFIRMACAO=true).
+      // É o envio que vai para um endereço digitado pelo visitante, então é
+      // ele que leva o token e vem primeiro: sem passar no reCAPTCHA, nada é
+      // enviado.
+      if (EMAILJS_CONFIG.CONFIRMACAO) {
+        await emailjs.send(
+          EMAILJS_CONFIG.SERVICE_ID,
+          EMAILJS_CONFIG.TEMPLATE_ID_FOR_SENDER,
+          {
+            name: nome,
+            email: email,
+            message: mensagem,
+            title: "Recebemos sua mensagem!", // assunto do email de confirmação
+            time: time,
+            ...token,
+          },
+          EMAILJS_OPTIONS,
+        );
+      }
+
+      // 2) Notificação para mim. Sem a confirmação, é o primeiro (e único)
+      // envio, então ela leva o token.
       await emailjs.send(
         EMAILJS_CONFIG.SERVICE_ID,
         EMAILJS_CONFIG.TEMPLATE_ID_FOR_ME,
@@ -143,10 +182,12 @@ const Contato = ({ onExit }) => {
           message: mensagem,
           title: `Nova mensagem do site de: ${nome}`, // assunto do email
           time: time,
+          ...(!EMAILJS_CONFIG.CONFIRMACAO && token),
         },
         EMAILJS_OPTIONS,
       );
 
+      marcarEnvio();
       setStatus("contato.sucesso");
       formElement.reset();
     } catch (err) {
@@ -170,7 +211,7 @@ const Contato = ({ onExit }) => {
           aria-live="polite"
         >
           {status
-            ? t(status)
+            ? t(status, { count: espera })
             : EMAILJS_PRONTO
               ? t("contato.subtitulo")
               : t("contato.nao_configurado", { email: EMAIL })}
