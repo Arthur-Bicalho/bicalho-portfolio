@@ -63,6 +63,15 @@ e os comandos que dependem delas avisam que ainda não estão configurados.
 2. Em *Settings → Environment Variables*, crie as mesmas variáveis do `.env.local`.
 3. Troque `arthur-bicalho.vercel.app` em `index.html` pelo endereço que a Vercel der ao projeto.
 
+### Cabeçalhos de segurança
+
+O `vercel.json` manda em todas as rotas uma `Content-Security-Policy` que libera só as origens
+que o site usa, além de `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` e
+`Permissions-Policy`. O `npm run preview` aplica os mesmos cabeçalhos (lidos do `vercel.json`),
+então dá para testar o build com a CSP de verdade. Ao usar um serviço externo novo (API, imagem,
+iframe), acrescente a origem na diretiva certa da CSP. Ao mudar o script inline do `index.html`,
+gere o hash de novo (o comando está em `vite.config.js`).
+
 ## O que ainda falta configurar
 
 Contas e chaves (vão nas variáveis de ambiente da Vercel; veja o `.env.example`):
